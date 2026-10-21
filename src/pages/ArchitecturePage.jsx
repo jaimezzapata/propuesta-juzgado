@@ -23,43 +23,56 @@ export default function ArchitecturePage({ selectedEngine, setSelectedEngine }) 
       {/* Page Header */}
       <div className="border-b-2 border-neutral-200 dark:border-neutral-800 pb-4">
         <div className="flex items-center gap-2 mb-2">
-          <span className="b-badge b-badge-yellow">SECCIÓN 03</span>
+          <span className="b-badge b-badge-yellow">SECCIÓN 04</span>
           <span className="font-mono text-xs text-neutral-600 dark:text-neutral-400 uppercase font-bold">INFRAESTRUCTURA & APIS</span>
         </div>
         <h1 className="text-2xl sm:text-3xl font-extrabold uppercase tracking-tight text-neutral-900 dark:text-neutral-50">
-          3. Arquitectura y Stack Tecnológico
+          4. Arquitectura y Stack Tecnológico
         </h1>
         <p className="text-sm text-neutral-700 dark:text-neutral-300 font-mono mt-1">
           Estructura técnica desacoplada y evaluación comparativa del motor de Inteligencia Artificial.
         </p>
       </div>
 
-      {/* 3 Core Tech Stack Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+      {/* 4 Core Tech Stack Cards */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         {/* Frontend */}
         <div className="clean-card bg-white dark:bg-[#1c1e22] border-t-4 border-t-[#2563eb]">
           <div className="flex items-center justify-between mb-2">
             <span className="font-mono text-xs font-bold text-neutral-500 dark:text-neutral-400">CAPA CLIENTE</span>
             <LayoutIcon size={20} className="text-[#2563eb]" />
           </div>
-          <h3 className="text-base font-bold uppercase mb-1 text-neutral-900 dark:text-neutral-100">React.js + Tailwind CSS</h3>
+          <h3 className="text-sm font-bold uppercase mb-1 text-neutral-900 dark:text-neutral-100">React.js + Tailwind CSS</h3>
           <p className="text-xs text-neutral-700 dark:text-neutral-300 leading-relaxed mb-3 font-normal">
-            Garantiza una interfaz ágil, limpia y optimizada para el flujo de trabajo del personal judicial. Validación reactiva sin recargas.
+            Sustitución visual en líneas resaltadas y descarga directa de documentos Word/PDF en mínimos clics.
           </p>
-          <span className="b-badge b-badge-blue text-[10px]">EXPERIENCIA DE USUARIO</span>
+          <span className="b-badge b-badge-blue text-[10px]">OPERACIÓN EN LOCAL</span>
         </div>
 
-        {/* Backend */}
+        {/* Backend & Audio */}
         <div className="clean-card bg-white dark:bg-[#1c1e22] border-t-4 border-t-[#059669]">
           <div className="flex items-center justify-between mb-2">
-            <span className="font-mono text-xs font-bold text-neutral-500 dark:text-neutral-400">ORQUESTACIÓN</span>
+            <span className="font-mono text-xs font-bold text-neutral-500 dark:text-neutral-400">ORQUESTACIÓN & AUDIO</span>
             <Server size={20} className="text-[#059669]" />
           </div>
-          <h3 className="text-base font-bold uppercase mb-1 text-neutral-900 dark:text-neutral-100">Node.js con Express</h3>
+          <h3 className="text-sm font-bold uppercase mb-1 text-neutral-900 dark:text-neutral-100">Node.js + Speech-to-Text</h3>
           <p className="text-xs text-neutral-700 dark:text-neutral-300 leading-relaxed mb-3 font-normal">
-            Encargado de orquestar las peticiones entre el cliente y el motor de IA de forma segura. Sanitiza variables y blinda los prompts.
+            Transcripción de audios de audiencias a texto estructurado y sanitización de variables en local.
           </p>
-          <span className="b-badge b-badge-green text-[10px]">API REST SEGURA</span>
+          <span className="b-badge b-badge-green text-[10px]">VOZ A TEXTO LOCAL</span>
+        </div>
+
+        {/* Legal Knowledge Base / RAG */}
+        <div className="clean-card bg-white dark:bg-[#1c1e22] border-t-4 border-t-[#7c3aed]">
+          <div className="flex items-center justify-between mb-2">
+            <span className="font-mono text-xs font-bold text-neutral-500 dark:text-neutral-400">BLINDAJE LEGAL</span>
+            <Cpu size={20} className="text-[#7c3aed]" />
+          </div>
+          <h3 className="text-sm font-bold uppercase mb-1 text-neutral-900 dark:text-neutral-100">Motor RAG & Prompt Shield</h3>
+          <p className="text-xs text-neutral-700 dark:text-neutral-300 leading-relaxed mb-3 font-normal">
+            Base legal precargada (Decreto 2591/91 y jurisprudencia). Prompts exactos que impiden alucinaciones.
+          </p>
+          <span className="b-badge b-badge-purple text-[10px]">CERO ALUCINACIONES</span>
         </div>
 
         {/* Database */}
@@ -68,11 +81,11 @@ export default function ArchitecturePage({ selectedEngine, setSelectedEngine }) 
             <span className="font-mono text-xs font-bold text-neutral-500 dark:text-neutral-400">PERSISTENCIA</span>
             <Database size={20} className="text-[#ea580c]" />
           </div>
-          <h3 className="text-base font-bold uppercase mb-1 text-neutral-900 dark:text-neutral-100">PostgreSQL</h3>
+          <h3 className="text-sm font-bold uppercase mb-1 text-neutral-900 dark:text-neutral-100">PostgreSQL</h3>
           <p className="text-xs text-neutral-700 dark:text-neutral-300 leading-relaxed mb-3 font-normal">
-            Para gestionar configuraciones, plantillas base y roles de usuario. <strong>Sin almacenar datos sensibles de los casos.</strong>
+            Gestión de plantillas maestras del Jefe y métricas de uso del despacho. Sin expedientes en BD.
           </p>
-          <span className="b-badge b-badge-neutral text-[10px]">CERO DATOS PERSONALES</span>
+          <span className="b-badge b-badge-neutral text-[10px]">MÉTRICAS & CONTROL</span>
         </div>
       </div>
 

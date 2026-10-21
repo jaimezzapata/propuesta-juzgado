@@ -2,13 +2,15 @@
 
 export const PROPOSAL_META = {
   radicado: "EXP-2026-F04-IA-SENA",
-  version: "1.0.0",
+  version: "1.2.0",
   fecha: "Octubre 2026",
   institucionReceptora: "Juzgado de Familia 4",
-  equipoEjecutor: "Fábrica de Software SENA",
-  responsableDesarrollo: "Equipo de Desarrollo Fábrica de Software SENA",
-  contraparte: "Juzgado de Familia 4",
-  estado: "PROPUESTA TÉCNICA OFICIAL"
+  equipoEjecutor: "Semillero de Investigación SENA (Instructores & Aprendices)",
+  responsableDesarrollo: "Semillero de Investigación - Fábrica de Software SENA",
+  contraparte: "Juzgado de Familia 4 (Jefe de Despacho & Sustanciadores)",
+  estado: "PROPUESTA TÉCNICA OFICIAL (AJUSTADA POST-REUNIÓN)",
+  fechaLimiteSprint: "5 de Diciembre de 2026",
+  proximaVisitaUrgente: "Jueves 29 de Octubre de 2026"
 };
 
 export const MOCK_TUTELA_CASES = [
@@ -199,18 +201,190 @@ export const RESEARCH_TEAM = [
     id: "jaime-zapata",
     nombre: "Jaime Alberto Zapata Valencia",
     iniciales: "JZ",
-    color: "#fde047"
+    color: "#fde047",
+    categoria: "Instructor Investigador"
   },
   {
     id: "jhon-valencia",
     nombre: "Jhon Freddy Valencia Gomez",
     iniciales: "JV",
-    color: "#93c5fd"
+    color: "#93c5fd",
+    categoria: "Instructor Investigador"
   },
   {
     id: "deymer-miranda",
     nombre: "Deymer Miranda Montoya",
     iniciales: "DM",
-    color: "#86efac"
+    color: "#86efac",
+    categoria: "Instructor Investigador"
+  }
+];
+
+// Espacio reservado para Aprendices del Semillero (Máximo 3)
+export const APPRENTICES_TEAM = [
+  {
+    id: "aprendiz-1",
+    cupo: "Aprendiz Investigador 1",
+    estado: "Por asignar (En vinculación)",
+    iniciales: "A1"
+  },
+  {
+    id: "aprendiz-2",
+    cupo: "Aprendiz Investigador 2",
+    estado: "Por asignar (En vinculación)",
+    iniciales: "A2"
+  },
+  {
+    id: "aprendiz-3",
+    cupo: "Aprendiz Investigador 3",
+    estado: "Por asignar (En vinculación)",
+    iniciales: "A3"
+  }
+];
+
+// Cronograma de Trabajo y Reuniones Clave
+export const PROJECT_SCHEDULE = [
+  {
+    id: "visita-urgente",
+    fecha: "Jueves 29 de Octubre de 2026",
+    titulo: "Visita Técnica y Delimitación Precisa del Alcance",
+    prioridad: "URGENTE",
+    objetivo: "Reunión presencial en el Juzgado de Familia 4 para delimitar de manera exhaustiva el alcance del MVP, recolectar los formatos oficiales con líneas resaltadas y formalizar las reglas del flujo de trabajo.",
+    entregables: ["Delimitación final del backlog", "Mapeo de variables en documentos base", "Definición de permisos Jefe vs Sustanciador"],
+    estado: "PROGRAMADA - CRÍTICA"
+  },
+  {
+    id: "seguimiento-nov",
+    fecha: "Miércoles 18 de Noviembre de 2026",
+    titulo: "Demostración de Avances Semillero SENA",
+    prioridad: "SEGUIMIENTO",
+    objetivo: "Sesión de prueba del prototipo funcional con el equipo judicial: validación del módulo de audio a texto, precisión del sustituidor de líneas resaltadas y corrección de prompts.",
+    entregables: ["Demostración funcional del MVP", "Revisión de velocidad y reducción de clics", "Ajustes de retroalimentación"],
+    estado: "PENDIENTE"
+  },
+  {
+    id: "cierre-trimestre",
+    fecha: "Viernes 5 de Diciembre de 2026",
+    titulo: "Cierre Trimestral y Entrega de Módulos Consolidados",
+    prioridad: "ENTREGA FORMAL",
+    objetivo: "Cierre del ciclo académico del Semillero de Investigación SENA. Entrega formal de lo consolidado en el periodo: aplicación web operativa, métricas de plantillas y protocolos de privacidad local.",
+    entregables: ["Código fuente documentado", "Manual de usuario para Jefe y Sustanciadores", "Informe final de investigación aplicada"],
+    estado: "HITO FINAL TRIMESTRE"
+  }
+];
+
+// Jerarquía de Roles y Control de Acceso (Admin / Jefe vs Trabajadores)
+export const ROLE_HIERARCHY = {
+  admin: {
+    nombre: "Administrador / Jefe de Despacho (Juez)",
+    descripcion: "Control total y gobernanza de los formatos judiciales y analítica del despacho.",
+    permisos: [
+      "Crear nuevas plantillas maestras y definir variables con líneas resaltadas",
+      "Editar y modificar la redacción base de las plantillas oficiales (Exclusivo)",
+      "Asignar plantillas específicas a cada funcionario o sustanciador",
+      "Consultar el panel de métricas, estadísticas de uso y tiempos de respuesta por plantilla",
+      "Aprobar y emitir el visto bueno final de los documentos antes de firma"
+    ]
+  },
+  trabajador: {
+    nombre: "Sustanciador / Funcionario Judicial",
+    descripcion: "Operación ágil del despacho: generación y diligenciamiento de providencias en mínimos clics.",
+    permisos: [
+      "Gestionar casos utilizando las plantillas asignadas por el Jefe",
+      "Cargar hechos, expedientes o grabaciones de audio del caso",
+      "Recibir correcciones y sugerencias del Asistente de Prompts para evitar alucinaciones",
+      "Generar en 1 clic el documento final con las variables sustituidas",
+      "Descargar el documento terminado (.docx / PDF) listo para revisión del Juez",
+      "Restricción de seguridad: No puede alterar ni borrar la plantilla maestra oficial"
+    ]
+  }
+};
+
+// Métricas de Uso de Plantillas para el Perfil Administrador
+export const TEMPLATE_USAGE_METRICS = [
+  {
+    id: "medida-salud",
+    plantilla: "Auto Admisorio con Medida Provisional (Salud)",
+    usosMes: 142,
+    tiempoPromedioMin: 3.5,
+    tasaAprobacionDirecta: "94%",
+    sustanciadoresAsignados: 4,
+    ahorroHorasMes: 68
+  },
+  {
+    id: "auto-tramite",
+    plantilla: "Auto Admisorio y Requerimiento de Informes",
+    usosMes: 98,
+    tiempoPromedioMin: 2.8,
+    tasaAprobacionDirecta: "97%",
+    sustanciadoresAsignados: 5,
+    ahorroHorasMes: 45
+  },
+  {
+    id: "fallo-salud",
+    plantilla: "Proyecto de Sentencia Tutela (Fallo de Fondo)",
+    usosMes: 64,
+    tiempoPromedioMin: 6.2,
+    tasaAprobacionDirecta: "91%",
+    sustanciadoresAsignados: 3,
+    ahorroHorasMes: 52
+  }
+];
+
+// Base de Conocimiento Legal Integrada (Para anclar la IA y evitar alucinaciones)
+export const LEGAL_KNOWLEDGE_BASE = [
+  {
+    norma: "Decreto 2591 de 1991",
+    ambito: "Reglamentario de la Acción de Tutela (Arts. 1 a 56)",
+    aplicacion: "Plazos perentorios de 10 días, procedencia de medidas provisionales inmediatas."
+  },
+  {
+    norma: "Decreto 1069 de 2015 / Dto. 333 de 2021",
+    ambito: "Reglas de Reparto de Acciones Constitucionales",
+    aplicacion: "Competencia de Juzgados de Familia frente a entidades de orden nacional/departamental."
+  },
+  {
+    norma: "Ley Estatutaria 1751 de 2015",
+    ambito: "Derecho Fundamental a la Salud",
+    aplicacion: "Principio de integralidad, continuidad del tratamiento y sujetos de especial protección."
+  },
+  {
+    norma: "Sentencias Hito Corte Constitucional",
+    ambito: "Jurisprudencia Vinculante (T-760/08, SU-508/20, T-016/22)",
+    aplicacion: "Criterios unificados para exoneración de copagos, transporte y medicamentos no PBS."
+  }
+];
+
+// Nuevas Funcionalidades Específicas Acordadas en la Reunión
+export const CORE_NEW_FEATURES = [
+  {
+    id: "lineas-resaltadas",
+    titulo: "Sustitución en Documento Base con Líneas Resaltadas",
+    tagline: "Preservación total del texto legal original del despacho",
+    descripcion: "El Jefe carga su plantilla con fragmentos resaltados en amarillo (datos variables). La IA analiza el caso y sustituye única y exclusivamente esas líneas, dejando intacto el rigor normativo preaprobado por el Juez."
+  },
+  {
+    id: "anti-alucinacion-prompt",
+    titulo: "Generación de Prompts Exactos & Asistente Corrector",
+    tagline: "Independiente de la destreza de redacción del usuario",
+    descripcion: "La herramienta autogenera prompts matemáticamente estructurados contra la base legal. Además, analiza el texto del sustanciador y le sugiere correcciones previas para garantizar que no falte ningún dato sustancial."
+  },
+  {
+    id: "transcripcion-audio",
+    titulo: "Lectura y Transcripción de Audios (Voz a Texto)",
+    tagline: "Escuchar el caso para redactar la providencia",
+    descripcion: "Módulo capaz de procesar grabaciones de audiencias, declaraciones o notas de voz del sustanciador, transcribir el audio fielmente a texto y estructurar automáticamente los hechos y pretensiones del caso."
+  },
+  {
+    id: "privacidad-no-cloud",
+    titulo: "Procesamiento Local de Variables (Zero-Cloud Leakage)",
+    tagline: "Cumplimiento estricto: El expediente no se sube a la nube",
+    descripcion: "Los datos de personas y el documento final residen y se ensamblan en el entorno local del Juzgado. La IA sólo recibe peticiones anonimizadas o motores ejecutados localmente, garantizando reserva legal absoluta."
+  },
+  {
+    id: "maxima-automatizacion",
+    titulo: "Operación en Mínimos Clics",
+    tagline: "Aceleración del trámite judicial sin fricción operativa",
+    descripcion: "Flujo optimizado para que el sustanciador pase del caso (o audio) al documento Word/PDF listo para aprobación en apenas 1 o 2 interacciones, eliminando formularios engorrosos."
   }
 ];

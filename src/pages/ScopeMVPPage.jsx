@@ -5,20 +5,23 @@ import {
   Download, 
   Sliders, 
   FileType, 
-  RefreshCw,
-  RotateCcw,
-  CheckCircle2,
-  FileCheck2,
-  Scale,
-  UserCheck,
-  FileDown,
-  FileText,
-  Edit3,
-  Upload,
-  BookOpen,
-  ArrowRight
+  RefreshCw, 
+  RotateCcw, 
+  CheckCircle2, 
+  FileCheck2, 
+  Scale, 
+  UserCheck, 
+  FileDown, 
+  FileText, 
+  Edit3, 
+  Upload, 
+  Mic,
+  Highlighter,
+  BarChart3,
+  Users,
+  Lock
 } from 'lucide-react';
-import { MOCK_TUTELA_CASES } from '../data/proposalData';
+import { MOCK_TUTELA_CASES, TEMPLATE_USAGE_METRICS } from '../data/proposalData';
 import { DEFAULT_LEGAL_TEMPLATES, compileTemplate } from '../data/legalTemplates';
 import { downloadDocumentAsWord, printOrSaveAsPdf } from '../utils/documentExporter';
 import { useAlert } from '../context/AlertContext';
@@ -29,7 +32,19 @@ export default function ScopeMVPPage() {
   const [isSimulating, setIsSimulating] = useState(false);
   const [copied, setCopied] = useState(false);
 
-  // Active Control Tab: 'variables' (Case Data) vs 'template' (Format Editor)
+  // User Profile Mode: 'trabajador' (Sustanciador) vs 'admin' (Jefe de Despacho)
+  const [userRole, setUserRole] = useState('trabajador');
+
+  // Visual Highlight of Replaced Lines in Base Document
+  const [highlightLines, setHighlightLines] = useState(true);
+
+  // Audio Speech-to-Text Simulation
+  const [isTranscribingAudio, setIsTranscribingAudio] = useState(false);
+
+  // Anti-Hallucination Prompt Validation Result
+  const [promptValidation, setPromptValidation] = useState(null);
+
+  // Active Control Tab: 'variables' (Case Data) vs 'template' (Format Editor) vs 'admin_metrics' (Métricas)
   const [activeTab, setActiveTab] = useState('variables');
 
   // Active Format / Template State
@@ -245,7 +260,65 @@ JUEZ CUARTO DE FAMILIA`;
     }, 450);
   };
 
-  // Live compilation of the legal document: Combines the current Template (original or modified) with Form Variables
+  // Trigger simulated audio transcription
+  const handleSimulateAudioTranscription = () => {
+    setIsTranscribingAudio(true);
+    setTimeout(() => {
+      setIsTranscribingAudio(false);
+      setForm(prev => ({
+        ...prev,
+        hechos: "En audiencia virtual grabada, la accionante manifiesta que padece melanoma metastásico diagnosticado por oncología. La EPS accionada ha revocado en tres ocasiones las órdenes de dispensación del medicamento Pembrolizumab 100mg argumentando fallas de inventario en su operador logístico.",
+        pretension: "Entrega inmediata del fármaco oncológico Pembrolizumab 100mg, continuidad sin dilaciones del tratamiento y exoneración de copagos por falta de capacidad económica.",
+        medidaCautelar: true,
+        medidaCautelarTexto: "Ordenar a la EPS accionada la dispensación del medicamento en el término perentorio de 24 horas bajo apremio de sanciones por desacato."
+      }));
+      showAlert({
+        type: 'success',
+        title: 'Transcripción de Audio Exitosa (Speech-to-Text Local)',
+        message: 'El audio de la audiencia fue transcrito localmente sin subirlo a la nube. Los hechos, pretensión y orden de medida cautelar se estructuraron automáticamente en la plantilla.',
+        confirmText: 'Ver Documento'
+      });
+      triggerSimulateAnimation();
+    }, 1200);
+  };
+
+  // Anti-hallucination prompt validator
+  const handleValidatePrompt = () => {
+    const hasAccionante = form.accionante && form.accionante.length > 3;
+    const hasHechos = form.hechos && form.hechos.length > 15;
+    const hasPretension = form.pretension && form.pretension.length > 8;
+
+    if (hasAccionante && hasHechos && hasPretension) {
+      setPromptValidation({
+        valid: true,
+        score: "100%",
+        resumen: "Prompt jurídico óptimo. Identificación de partes completa, hecho generador delimitado y alineado con el Decreto 2591/91. Listo para generar sin alucinaciones."
+      });
+    } else {
+      setPromptValidation({
+        valid: false,
+        score: "65%",
+        resumen: "Sugerencia del Asistente: Diligencie o amplíe los hechos y la pretensión para evitar que la IA asuma supuestos jurídicos."
+      });
+    }
+  };
+
+  // Compile document mapping
+  const compiledDataMapping = useMemo(() => {
+    return {
+      '{{RADICADO}}': form.radicado || "2026-F04-TUT-0089",
+      '{{ACCIONANTE}}': form.accionante || "[Nombre del Accionante]",
+      '{{IDENTIFICACION}}': form.identificacion || "[Identificación]",
+      '{{ACCIONADO}}': form.accionado || "[Entidad Accionada]",
+      '{{DERECHOS}}': form.derechosVulnerados || "[Derechos Invocados]",
+      '{{PRETENSION}}': form.pretension || "[Pretensión del accionante]",
+      '{{HECHOS}}': form.hechos || "[Relato fáctico sucinto del expediente]",
+      '{{ORDEN_MEDIDA}}': form.medidaCautelarTexto || form.pretension || "Protección preventiva urgente.",
+      '{{FECHA_ACTUAL}}': new Date().toLocaleDateString('es-CO', { day: 'numeric', month: 'long', year: 'numeric' })
+    };
+  }, [form]);
+
+  // Live compilation of the legal document (plain text for export)
   const previewDocument = useMemo(() => {
     return compileTemplate(templateText, {
       radicado: form.radicado || "2026-F04-TUT-0089",
@@ -258,6 +331,30 @@ JUEZ CUARTO DE FAMILIA`;
       medidaCautelarTexto: form.medidaCautelarTexto || form.pretension || "Protección preventiva urgente."
     });
   }, [templateText, form]);
+
+  // Render document with visual highlights
+  const renderVisualDocument = useMemo(() => {
+    if (!highlightLines) {
+      return previewDocument;
+    }
+    const tagsRegex = /({{RADICADO}}|{{ACCIONANTE}}|{{IDENTIFICACION}}|{{ACCIONADO}}|{{DERECHOS}}|{{PRETENSION}}|{{HECHOS}}|{{ORDEN_MEDIDA}}|{{FECHA_ACTUAL}})/g;
+    const parts = templateText.split(tagsRegex);
+
+    return parts.map((part, index) => {
+      if (compiledDataMapping[part] !== undefined) {
+        return (
+          <mark 
+            key={index} 
+            className="bg-yellow-300 dark:bg-yellow-400 text-black px-1 font-bold rounded-xs shadow-xs"
+            title={`Línea sustituida por IA: ${part}`}
+          >
+            {compiledDataMapping[part]}
+          </mark>
+        );
+      }
+      return <span key={index}>{part}</span>;
+    });
+  }, [templateText, compiledDataMapping, highlightLines, previewDocument]);
 
   const handleCopy = () => {
     navigator.clipboard.writeText(previewDocument);
@@ -314,44 +411,59 @@ JUEZ CUARTO DE FAMILIA`;
       {/* Page Header */}
       <div className="border-b-2 border-neutral-200 dark:border-neutral-800 pb-4">
         <div className="flex items-center gap-2 mb-2">
-          <span className="b-badge b-badge-yellow">SECCIÓN 02</span>
-          <span className="font-mono text-xs text-neutral-600 dark:text-neutral-400 uppercase font-bold">ALCANCE TÉCNICO & SIMULADOR</span>
+          <span className="b-badge b-badge-yellow">SECCIÓN 05</span>
+          <span className="font-mono text-xs text-neutral-600 dark:text-neutral-400 uppercase font-bold">ALCANCE TÉCNICO & SIMULADOR (DEMO)</span>
         </div>
         <h1 className="text-2xl sm:text-3xl font-extrabold uppercase tracking-tight text-neutral-900 dark:text-neutral-50">
-          2. Alcance Técnico y Simulador MVP (Tutelas)
+          5. Alcance Técnico y Simulador MVP (Demo)
         </h1>
         <p className="text-sm text-neutral-700 dark:text-neutral-300 font-mono mt-1">
-          Simulación completa del flujo judicial: <strong>lectura de formatos base</strong>, <strong>modificación de la plantilla</strong> e inyección inteligente de <strong>variables del caso</strong> con exportación a Word y PDF.
+          Sustitución en <strong>documentos con líneas resaltadas</strong>, lectura de <strong>audios</strong>, <strong>asistente corrector de prompts</strong> y analítica por perfiles.
         </p>
       </div>
 
-      {/* Workflow Process Banner */}
-      <div className="p-4 bg-white dark:bg-[#1c1e22] border-2 border-[#18181b] dark:border-neutral-700 rounded shadow-[3px_3px_0px_#18181b] dark:shadow-[3px_3px_0px_#FFE600]">
-        <div className="flex items-center gap-2 font-mono text-xs font-bold uppercase text-[#2563eb] mb-2">
-          <BookOpen size={16} />
-          <span>Flujo de Trabajo Simulado (Lectura ➜ Modificación ➜ Compilación)</span>
+      {/* Role Switcher Toolbar (Jefe vs Sustanciador) */}
+      <div className="p-3 bg-white dark:bg-[#1c1e22] border-2 border-[#18181b] dark:border-neutral-700 rounded shadow-[3px_3px_0px_#18181b] flex flex-wrap items-center justify-between gap-3">
+        <div className="flex items-center gap-2">
+          <span className="font-mono text-xs font-bold text-neutral-600 dark:text-neutral-400 uppercase">
+            Perfil de Usuario Activo:
+          </span>
+          <div className="flex items-center gap-1 bg-neutral-100 dark:bg-neutral-800 p-1 rounded border border-neutral-300 dark:border-neutral-700 font-mono text-xs">
+            <button
+              onClick={() => {
+                setUserRole('trabajador');
+                if (activeTab === 'admin_metrics') setActiveTab('variables');
+              }}
+              className={`py-1 px-2.5 rounded font-bold flex items-center gap-1.5 transition-all ${
+                userRole === 'trabajador' 
+                  ? 'bg-blue-600 text-white shadow-xs' 
+                  : 'text-neutral-600 dark:text-neutral-400 hover:text-black dark:hover:text-white'
+              }`}
+            >
+              <Scale size={13} />
+              <span>Sustanciador (Trabajador)</span>
+            </button>
+            <button
+              onClick={() => {
+                setUserRole('admin');
+                setActiveTab('admin_metrics');
+              }}
+              className={`py-1 px-2.5 rounded font-bold flex items-center gap-1.5 transition-all ${
+                userRole === 'admin' 
+                  ? 'bg-yellow-400 text-black shadow-xs font-black' 
+                  : 'text-neutral-600 dark:text-neutral-400 hover:text-black dark:hover:text-white'
+              }`}
+            >
+              <Users size={13} />
+              <span>Jefe de Despacho (Admin)</span>
+            </button>
+          </div>
         </div>
-        <div className="grid grid-cols-1 sm:grid-cols-4 gap-3 text-xs font-mono">
-          <div className="p-2.5 bg-neutral-50 dark:bg-neutral-800/80 border border-neutral-200 dark:border-neutral-700 rounded">
-            <span className="text-[10px] text-neutral-500 font-bold block">PASO 1</span>
-            <strong className="text-neutral-900 dark:text-neutral-100">Lectura de Formato:</strong>
-            <p className="text-[11px] text-neutral-600 dark:text-neutral-400 mt-0.5">Se carga la plantilla judicial base del despacho.</p>
-          </div>
-          <div className="p-2.5 bg-neutral-50 dark:bg-neutral-800/80 border border-neutral-200 dark:border-neutral-700 rounded">
-            <span className="text-[10px] text-neutral-500 font-bold block">PASO 2</span>
-            <strong className="text-neutral-900 dark:text-neutral-100">Modificación de Formato:</strong>
-            <p className="text-[11px] text-neutral-600 dark:text-neutral-400 mt-0.5">El usuario edita considerandos, órdenes o artículos.</p>
-          </div>
-          <div className="p-2.5 bg-neutral-50 dark:bg-neutral-800/80 border border-neutral-200 dark:border-neutral-700 rounded">
-            <span className="text-[10px] text-neutral-500 font-bold block">PASO 3</span>
-            <strong className="text-neutral-900 dark:text-neutral-100">Inyección de Variables:</strong>
-            <p className="text-[11px] text-neutral-600 dark:text-neutral-400 mt-0.5">Autocompletado de hechos, accionante y pretensión.</p>
-          </div>
-          <div className="p-2.5 bg-neutral-50 dark:bg-neutral-800/80 border border-neutral-200 dark:border-neutral-700 rounded">
-            <span className="text-[10px] text-neutral-500 font-bold block">PASO 4</span>
-            <strong className="text-neutral-900 dark:text-neutral-100">Descarga Directa:</strong>
-            <p className="text-[11px] text-neutral-600 dark:text-neutral-400 mt-0.5">Exportación en archivo Word (.doc) y PDF judicial.</p>
-          </div>
+
+        <div className="flex items-center gap-2 font-mono text-xs">
+          <span className="b-badge b-badge-green flex items-center gap-1 text-[10px]">
+            <Lock size={11} /> Zero-Cloud: Datos en Local
+          </span>
         </div>
       </div>
 
@@ -397,34 +509,87 @@ JUEZ CUARTO DE FAMILIA`;
             <div className="flex items-center gap-1 p-1 bg-neutral-200 dark:bg-neutral-900 rounded border border-neutral-300 dark:border-neutral-700">
               <button
                 onClick={() => setActiveTab('variables')}
-                className={`flex-1 py-1.5 px-3 rounded font-bold text-xs flex items-center justify-center gap-1.5 transition-all ${
+                className={`flex-1 py-1.5 px-2 rounded font-bold text-xs flex items-center justify-center gap-1.5 transition-all ${
                   activeTab === 'variables'
                     ? 'bg-white dark:bg-[#1c1e22] text-[#2563eb] shadow-sm border border-neutral-300 dark:border-neutral-600'
                     : 'text-neutral-600 dark:text-neutral-400 hover:text-black dark:hover:text-white'
                 }`}
               >
                 <Sliders size={13} />
-                <span>1. Datos del Caso</span>
+                <span>1. Caso / Audio</span>
               </button>
               <button
                 onClick={() => setActiveTab('template')}
-                className={`flex-1 py-1.5 px-3 rounded font-bold text-xs flex items-center justify-center gap-1.5 transition-all ${
+                className={`flex-1 py-1.5 px-2 rounded font-bold text-xs flex items-center justify-center gap-1.5 transition-all ${
                   activeTab === 'template'
                     ? 'bg-white dark:bg-[#1c1e22] text-[#2563eb] shadow-sm border border-neutral-300 dark:border-neutral-600'
                     : 'text-neutral-600 dark:text-neutral-400 hover:text-black dark:hover:text-white'
                 }`}
               >
                 <Edit3 size={13} />
-                <span>2. Leer / Modificar Formato</span>
+                <span>2. Formato Base</span>
                 {isCustomTemplate && (
                   <span className="w-2 h-2 rounded-full bg-[#e11d48]"></span>
                 )}
               </button>
+              {userRole === 'admin' && (
+                <button
+                  onClick={() => setActiveTab('admin_metrics')}
+                  className={`flex-1 py-1.5 px-2 rounded font-bold text-xs flex items-center justify-center gap-1.5 transition-all ${
+                    activeTab === 'admin_metrics'
+                      ? 'bg-yellow-400 text-black shadow-sm font-black border border-yellow-500'
+                      : 'text-neutral-600 dark:text-neutral-400 hover:text-black dark:hover:text-white'
+                  }`}
+                >
+                  <BarChart3 size={13} />
+                  <span>3. Métricas Jefe</span>
+                </button>
+              )}
             </div>
 
-            {/* TAB 1: EDITABLE CASE VARIABLES */}
+            {/* TAB 1: EDITABLE CASE VARIABLES & AUDIO */}
             {activeTab === 'variables' && (
               <div className="space-y-3">
+                {/* Audio & Prompt Assistant Action Bar */}
+                <div className="p-2.5 bg-neutral-100 dark:bg-neutral-800/80 rounded border border-neutral-300 dark:border-neutral-700 flex flex-wrap items-center gap-2">
+                  <button
+                    onClick={handleSimulateAudioTranscription}
+                    disabled={isTranscribingAudio}
+                    className="b-btn text-[11px] py-1 px-2.5 bg-purple-50 text-purple-900 dark:bg-purple-950/60 dark:text-purple-200 border-purple-400 font-bold flex items-center gap-1.5 hover:bg-purple-100"
+                    title="Escuchar audio de audiencia o testimonio y redactar los hechos"
+                  >
+                    <Mic size={13} className={isTranscribingAudio ? 'animate-pulse text-[#e11d48]' : 'text-purple-600'} />
+                    <span>{isTranscribingAudio ? 'Transcribiendo audio...' : 'Transcribir Audio (Audiencia)'}</span>
+                  </button>
+
+                  <button
+                    onClick={handleValidatePrompt}
+                    className="b-btn text-[11px] py-1 px-2.5 bg-white dark:bg-neutral-900 text-neutral-800 dark:text-neutral-200 border-neutral-400 font-bold flex items-center gap-1.5"
+                    title="Analizar y verificar el prompt para evitar alucinaciones"
+                  >
+                    <Sliders size={13} className="text-[#2563eb]" />
+                    <span>Validar Prompt IA</span>
+                  </button>
+                </div>
+
+                {/* Prompt Diagnostic Banner if activated */}
+                {promptValidation && (
+                  <div className={`p-2.5 rounded border text-[11px] font-mono ${
+                    promptValidation.valid 
+                      ? 'bg-emerald-50 dark:bg-emerald-950/40 border-emerald-400 text-emerald-950 dark:text-emerald-100' 
+                      : 'bg-amber-50 dark:bg-amber-950/40 border-amber-400 text-amber-950 dark:text-amber-100'
+                  }`}>
+                    <div className="flex items-center justify-between font-bold mb-1">
+                      <span className="flex items-center gap-1">
+                        <CheckCircle2 size={13} />
+                        <span>Precisión del Prompt: {promptValidation.score}</span>
+                      </span>
+                      <button onClick={() => setPromptValidation(null)} className="text-neutral-500 hover:text-black">✕</button>
+                    </div>
+                    <p>{promptValidation.resumen}</p>
+                  </div>
+                )}
+
                 <div className="flex items-center justify-between pb-2 border-b border-neutral-200 dark:border-neutral-700 font-bold text-neutral-900 dark:text-neutral-100">
                   <span className="flex items-center gap-1.5">
                     <Sliders size={14} className="text-[#2563eb]" />
@@ -675,6 +840,41 @@ JUEZ CUARTO DE FAMILIA`;
               </div>
             )}
 
+            {/* TAB 3: ADMIN METRICS & TEMPLATE MANAGEMENT */}
+            {activeTab === 'admin_metrics' && (
+              <div className="space-y-3">
+                <div className="flex items-center justify-between pb-2 border-b border-neutral-200 dark:border-neutral-700 font-bold text-neutral-900 dark:text-neutral-100">
+                  <span className="flex items-center gap-1.5">
+                    <BarChart3 size={14} className="text-yellow-600" />
+                    <span>MÉTRICAS Y CONTROL (JEFE DE DESPACHO)</span>
+                  </span>
+                  <span className="b-badge b-badge-yellow text-[9px]">EXCLUSIVO JEFE</span>
+                </div>
+
+                <div className="p-2.5 bg-yellow-50 dark:bg-yellow-950/30 border border-yellow-300 dark:border-yellow-800 rounded text-[11px] leading-relaxed">
+                  <strong>Control Maestro:</strong> Solo el Administrador puede editar la redacción jurídica permanente de las plantillas y autorizar a los sustanciadores.
+                </div>
+
+                <div className="space-y-2">
+                  <div className="text-[10px] font-bold text-neutral-600 dark:text-neutral-400 uppercase">
+                    Rendimiento por Plantilla (Mes Actual):
+                  </div>
+                  {TEMPLATE_USAGE_METRICS.map((metric) => (
+                    <div key={metric.id} className="p-2.5 bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-700 rounded space-y-1">
+                      <div className="font-bold text-neutral-900 dark:text-neutral-100 text-[11px]">
+                        {metric.plantilla}
+                      </div>
+                      <div className="grid grid-cols-3 gap-1 text-[10px] text-neutral-600 dark:text-neutral-400 pt-1 border-t border-neutral-100 dark:border-neutral-800">
+                        <div>Usos: <strong className="text-neutral-900 dark:text-neutral-100">{metric.usosMes}</strong></div>
+                        <div>Tiempo: <strong className="text-neutral-900 dark:text-neutral-100">{metric.tiempoPromedioMin} min</strong></div>
+                        <div>Aprobación: <strong className="text-[#059669]">{metric.tasaAprobacionDirecta}</strong></div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
             {/* Simulation Trigger Button */}
             <button
               onClick={triggerSimulateAnimation}
@@ -689,12 +889,28 @@ JUEZ CUARTO DE FAMILIA`;
           {/* Right Column: Generated Output Document */}
           <div className="lg:col-span-7 p-4 bg-neutral-50 dark:bg-neutral-800/40 border border-neutral-200 dark:border-neutral-700 rounded flex flex-col justify-between">
             <div>
-              <div className="flex items-center justify-between mb-3 pb-2 border-b border-neutral-200 dark:border-neutral-700 font-mono text-xs font-bold text-neutral-900 dark:text-neutral-100">
+              <div className="flex flex-wrap items-center justify-between mb-3 pb-2 border-b border-neutral-200 dark:border-neutral-700 font-mono text-xs font-bold text-neutral-900 dark:text-neutral-100 gap-2">
                 <span className="flex items-center gap-1.5">
                   <FileType size={14} className="text-[#059669]" />
-                  <span>OUTPUT: BORRADOR COMPILADO EN TIEMPO REAL</span>
+                  <span>DOCUMENTO BASE CON REEMPLAZO INTELIGENTE</span>
                 </span>
-                <span className="b-badge b-badge-yellow text-[9px] py-0.5 font-bold">VISTA PREVIA JUDICIAL</span>
+                
+                {/* Visual Highlight Toggle Switch */}
+                <div className="flex items-center gap-2">
+                  <button
+                    onClick={() => setHighlightLines(!highlightLines)}
+                    className={`b-btn text-[10px] py-1 px-2 flex items-center gap-1.5 transition-all ${
+                      highlightLines 
+                        ? 'bg-yellow-300 text-black border-black font-black' 
+                        : 'bg-white dark:bg-neutral-900 text-neutral-500'
+                    }`}
+                    title="Alternar resaltado visual de las líneas sustituidas por la IA"
+                  >
+                    <Highlighter size={12} />
+                    <span>{highlightLines ? 'Líneas Resaltadas: ON' : 'Líneas Resaltadas: OFF'}</span>
+                  </button>
+                  <span className="b-badge b-badge-yellow text-[9px] py-0.5 font-bold">VISTA PREVIA</span>
+                </div>
               </div>
 
               {/* Document Text Box */}
@@ -702,10 +918,10 @@ JUEZ CUARTO DE FAMILIA`;
                 {isSimulating ? (
                   <div className="flex flex-col items-center justify-center py-24 gap-3 text-neutral-500 dark:text-neutral-400 font-bold">
                     <RefreshCw className="animate-spin text-[#2563eb]" size={28} />
-                    <span>Leyendo formato base y fusionando variables fácticas...</span>
+                    <span>Sustituyendo líneas resaltadas sin alterar la base legal...</span>
                   </div>
                 ) : (
-                  previewDocument
+                  renderVisualDocument
                 )}
               </div>
             </div>

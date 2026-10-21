@@ -8,10 +8,11 @@ import {
   ArrowLeft, 
   ArrowRight, 
   ShieldCheck,
-  Users
+  Users,
+  GraduationCap
 } from 'lucide-react';
 import { NAV_ITEMS } from '../data/navigation';
-import { PROPOSAL_META, RESEARCH_TEAM } from '../data/proposalData';
+import { PROPOSAL_META, RESEARCH_TEAM, APPRENTICES_TEAM } from '../data/proposalData';
 
 export default function Layout({ children, isDark, setIsDark, selectedEngine }) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -100,7 +101,7 @@ export default function Layout({ children, isDark, setIsDark, selectedEngine }) 
                 className={`b-btn text-xs py-1.5 px-2.5 flex items-center gap-1.5 transition-all ${
                   showTeamModal ? 'bg-[#fde047] text-[#18181b]' : 'bg-white dark:bg-[#181a1f]'
                 }`}
-                title="Integrantes"
+                title="Integrantes del Semillero"
                 aria-label="Ver integrantes de trabajo"
                 aria-expanded={showTeamModal}
               >
@@ -116,17 +117,17 @@ export default function Layout({ children, isDark, setIsDark, selectedEngine }) 
               {/* Popover Card */}
               {showTeamModal && (
                 <div 
-                  className="absolute right-0 mt-2 w-72 sm:w-80 bg-white dark:bg-[#1c1e22] border-2 border-[#18181b] dark:border-[#f4f4f5] shadow-[4px_4px_0px_#18181b] dark:shadow-[4px_4px_0px_#f4f4f5] rounded-md p-3.5 z-50 animate-in fade-in duration-150"
+                  className="absolute right-0 mt-2 w-80 sm:w-96 bg-white dark:bg-[#1c1e22] border-2 border-[#18181b] dark:border-[#f4f4f5] shadow-[4px_4px_0px_#18181b] dark:shadow-[4px_4px_0px_#f4f4f5] rounded-md p-3.5 z-50 animate-in fade-in duration-150 max-h-[85vh] overflow-y-auto"
                   role="dialog"
                   aria-label="Integrantes de trabajo"
                 >
-                  <div className="flex items-center justify-between pb-2 mb-2.5 border-b-2 border-neutral-200 dark:border-neutral-800">
+                  <div className="flex items-center justify-between pb-2 mb-3 border-b-2 border-neutral-200 dark:border-neutral-800">
                     <div className="flex items-center gap-2">
                       <div className="w-6 h-6 rounded bg-[#fde047] border border-[#18181b] flex items-center justify-center text-[#18181b]">
                         <Users size={13} />
                       </div>
                       <span className="font-mono text-xs font-bold uppercase tracking-wider text-neutral-900 dark:text-neutral-100">
-                        Integrantes
+                        Equipo de Trabajo
                       </span>
                     </div>
                     <button
@@ -138,25 +139,71 @@ export default function Layout({ children, isDark, setIsDark, selectedEngine }) 
                     </button>
                   </div>
 
-                  <div className="space-y-2">
-                    {RESEARCH_TEAM.map((member) => (
-                      <div
-                        key={member.id}
-                        className="flex items-center gap-3 p-2.5 bg-neutral-50 dark:bg-neutral-800/60 border border-neutral-200 dark:border-neutral-700/80 rounded"
-                      >
-                        <div 
-                          className="w-8 h-8 rounded shrink-0 border border-[#18181b] dark:border-white font-mono text-xs font-black flex items-center justify-center text-[#18181b]"
-                          style={{ backgroundColor: member.color }}
+                  {/* Section 1: Instructores */}
+                  <div className="mb-3">
+                    <div className="flex items-center justify-between mb-1.5">
+                      <span className="font-mono text-[10px] font-bold uppercase tracking-wider text-neutral-600 dark:text-neutral-400">
+                        Instructores Investigadores
+                      </span>
+                      <span className="b-badge b-badge-yellow text-[9px]">3</span>
+                    </div>
+
+                    <div className="space-y-1.5">
+                      {RESEARCH_TEAM.map((member) => (
+                        <div
+                          key={member.id}
+                          className="flex items-center gap-2.5 p-2 bg-neutral-50 dark:bg-neutral-800/60 border border-neutral-200 dark:border-neutral-700/80 rounded"
                         >
-                          {member.iniciales}
+                          <div 
+                            className="w-7 h-7 rounded shrink-0 border border-[#18181b] dark:border-white font-mono text-[11px] font-black flex items-center justify-center text-[#18181b]"
+                            style={{ backgroundColor: member.color }}
+                          >
+                            {member.iniciales}
+                          </div>
+                          <div className="min-w-0 flex-1">
+                            <p className="font-bold text-xs text-neutral-900 dark:text-neutral-100 leading-snug">
+                              {member.nombre}
+                            </p>
+                          </div>
                         </div>
-                        <div className="min-w-0 flex-1">
-                          <p className="font-bold text-xs sm:text-sm text-neutral-900 dark:text-neutral-100 leading-snug">
-                            {member.nombre}
-                          </p>
-                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Section 2: Aprendices (Espacio Reservado) */}
+                  <div className="pt-2 border-t border-neutral-200 dark:border-neutral-800">
+                    <div className="flex items-center justify-between mb-1.5">
+                      <div className="flex items-center gap-1.5 font-mono text-[10px] font-bold uppercase tracking-wider text-neutral-600 dark:text-neutral-400">
+                        <GraduationCap size={13} className="text-[#2563eb]" />
+                        <span>Aprendices del Semillero</span>
                       </div>
-                    ))}
+                      <span className="b-badge b-badge-blue text-[9px]">MÁX. 3</span>
+                    </div>
+
+                    <p className="font-mono text-[10px] text-neutral-500 dark:text-neutral-400 mb-2 leading-relaxed">
+                      Espacio reservado para los aprendices en formación que serán vinculados al semillero de investigación.
+                    </p>
+
+                    <div className="space-y-1.5">
+                      {APPRENTICES_TEAM.map((slot) => (
+                        <div
+                          key={slot.id}
+                          className="flex items-center justify-between gap-2 p-2 bg-blue-50/50 dark:bg-blue-950/20 border border-dashed border-blue-300 dark:border-blue-800 rounded font-mono text-xs"
+                        >
+                          <div className="flex items-center gap-2">
+                            <div className="w-6 h-6 rounded bg-neutral-200 dark:bg-neutral-700 text-neutral-700 dark:text-neutral-300 font-bold text-[10px] flex items-center justify-center">
+                              {slot.iniciales}
+                            </div>
+                            <span className="text-neutral-800 dark:text-neutral-200 font-medium text-[11px]">
+                              {slot.cupo}
+                            </span>
+                          </div>
+                          <span className="text-[10px] text-[#2563eb] dark:text-[#60a5fa] font-bold bg-white dark:bg-neutral-900 px-1.5 py-0.5 rounded border border-blue-200 dark:border-blue-900">
+                            {slot.estado}
+                          </span>
+                        </div>
+                      ))}
+                    </div>
                   </div>
                 </div>
               )}

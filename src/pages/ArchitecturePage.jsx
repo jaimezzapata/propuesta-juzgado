@@ -49,17 +49,17 @@ export default function ArchitecturePage({ selectedEngine, setSelectedEngine }) 
           <span className="b-badge b-badge-blue text-[10px]">OPERACIÓN EN LOCAL</span>
         </div>
 
-        {/* Backend & Audio */}
+        {/* Backend & Orquestación */}
         <div className="clean-card bg-white dark:bg-[#1c1e22] border-t-4 border-t-[#059669]">
           <div className="flex items-center justify-between mb-2">
-            <span className="font-mono text-xs font-bold text-neutral-500 dark:text-neutral-400">ORQUESTACIÓN & AUDIO</span>
+            <span className="font-mono text-xs font-bold text-neutral-500 dark:text-neutral-400">ORQUESTACIÓN LOCAL</span>
             <Server size={20} className="text-[#059669]" />
           </div>
-          <h3 className="text-sm font-bold uppercase mb-1 text-neutral-900 dark:text-neutral-100">Node.js + Speech-to-Text</h3>
+          <h3 className="text-sm font-bold uppercase mb-1 text-neutral-900 dark:text-neutral-100">Node.js + Motor de Plantillas</h3>
           <p className="text-xs text-neutral-700 dark:text-neutral-300 leading-relaxed mb-3 font-normal">
-            Transcripción de audios de audiencias a texto estructurado y sanitización de variables en local.
+            Sustitución de líneas resaltadas, inyección de variables procesadas y ensamblado documental en local.
           </p>
-          <span className="b-badge b-badge-green text-[10px]">VOZ A TEXTO LOCAL</span>
+          <span className="b-badge b-badge-green text-[10px]">PROCESAMIENTO LOCAL</span>
         </div>
 
         {/* Legal Knowledge Base / RAG */}

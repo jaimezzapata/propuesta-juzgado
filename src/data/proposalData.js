@@ -258,7 +258,7 @@ export const PROJECT_SCHEDULE = [
     fecha: "Miércoles 18 de Noviembre de 2026",
     titulo: "Demostración de Avances Semillero SENA",
     prioridad: "SEGUIMIENTO",
-    objetivo: "Sesión de prueba del prototipo funcional con el equipo judicial: validación del módulo de audio a texto, precisión del sustituidor de líneas resaltadas y corrección de prompts.",
+    objetivo: "Sesión de prueba del prototipo funcional con el equipo judicial: validación de precisión del sustituidor de líneas resaltadas, estructuración de variables y corrección de prompts.",
     entregables: ["Demostración funcional del MVP", "Revisión de velocidad y reducción de clics", "Ajustes de retroalimentación"],
     estado: "PENDIENTE"
   },
@@ -291,7 +291,7 @@ export const ROLE_HIERARCHY = {
     descripcion: "Operación ágil del despacho: generación y diligenciamiento de providencias en mínimos clics.",
     permisos: [
       "Gestionar casos utilizando las plantillas asignadas por el Jefe",
-      "Cargar hechos, expedientes o grabaciones de audio del caso",
+      "Cargar hechos, antecedentes fácticos y variables del caso",
       "Recibir correcciones y sugerencias del Asistente de Prompts para evitar alucinaciones",
       "Generar en 1 clic el documento final con las variables sustituidas",
       "Descargar el documento terminado (.docx / PDF) listo para revisión del Juez",
@@ -370,10 +370,10 @@ export const CORE_NEW_FEATURES = [
     descripcion: "La herramienta autogenera prompts matemáticamente estructurados contra la base legal. Además, analiza el texto del sustanciador y le sugiere correcciones previas para garantizar que no falte ningún dato sustancial."
   },
   {
-    id: "transcripcion-audio",
-    titulo: "Lectura y Transcripción de Audios (Voz a Texto)",
-    tagline: "Escuchar el caso para redactar la providencia",
-    descripcion: "Módulo capaz de procesar grabaciones de audiencias, declaraciones o notas de voz del sustanciador, transcribir el audio fielmente a texto y estructurar automáticamente los hechos y pretensiones del caso."
+    id: "extraccion-variables",
+    titulo: "Estructuración de Hechos y Extracción de Variables",
+    tagline: "Mapeo ordenado de antecedentes a la plantilla judicial",
+    descripcion: "Módulo capaz de procesar la síntesis fáctica del caso, organizando ordenadamente los hechos, partes y pretensiones para poblar con precisión matemática los campos resaltados del documento base."
   },
   {
     id: "privacidad-no-cloud",
@@ -385,6 +385,28 @@ export const CORE_NEW_FEATURES = [
     id: "maxima-automatizacion",
     titulo: "Operación en Mínimos Clics",
     tagline: "Aceleración del trámite judicial sin fricción operativa",
-    descripcion: "Flujo optimizado para que el sustanciador pase del caso (o audio) al documento Word/PDF listo para aprobación en apenas 1 o 2 interacciones, eliminando formularios engorrosos."
+    descripcion: "Flujo optimizado para que el sustanciador pase de los datos del caso al documento Word/PDF listo para aprobación en apenas 1 o 2 interacciones, eliminando formularios engorrosos."
+  }
+];
+
+// Módulos Delimitados para Fases Futuras (Post-MVP)
+export const FUTURE_ROADMAP_FEATURES = [
+  {
+    id: "transcripcion-voz",
+    titulo: "Transcripción de Audios y Declaraciones (Voz a Texto Local)",
+    fase: "Fase 2 (Post-MVP)",
+    descripcion: "Módulo para procesar grabaciones de audiencias o notas de voz del despacho a texto estructurado. Excluido del MVP inicial para asegurar estabilidad y entrega a tiempo."
+  },
+  {
+    id: "integracion-gestion",
+    titulo: "Interoperabilidad con Sistemas de Gestión Judicial",
+    fase: "Fase 2 (Post-MVP)",
+    descripcion: "Conexión directa con plataformas externas de radicación y archivo de la Rama Judicial."
+  },
+  {
+    id: "firma-digital",
+    titulo: "Firma Electrónica y Radicación Automatizada",
+    fase: "Fase 3 (Largo Plazo)",
+    descripcion: "Flujo de firma digital institucional y notificación procesal desatendida."
   }
 ];

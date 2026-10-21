@@ -14,12 +14,12 @@ import {
   ChevronRight,
   Calendar,
   AlertCircle,
-  Mic,
+  FileText,
   Highlighter,
   Sliders,
   Info
 } from 'lucide-react';
-import { PROPOSAL_META, CORE_NEW_FEATURES } from '../data/proposalData';
+import { PROPOSAL_META, CORE_NEW_FEATURES, FUTURE_ROADMAP_FEATURES } from '../data/proposalData';
 
 export default function ExecutiveOverview() {
   return (
@@ -55,7 +55,7 @@ export default function ExecutiveOverview() {
 
           <NavLink to="/alcance-mvp" className="b-btn text-xs bg-neutral-100 dark:bg-neutral-800">
             <Sparkles size={14} className="text-[#2563eb]" />
-            <span>Probar Simulador MVP (Tutelas & Audios)</span>
+            <span>Probar Simulador MVP (Tutelas)</span>
           </NavLink>
         </div>
       </div>
@@ -120,7 +120,7 @@ export default function ExecutiveOverview() {
             const icons = {
               "lineas-resaltadas": Highlighter,
               "anti-alucinacion-prompt": Sliders,
-              "transcripcion-audio": Mic,
+              "extraccion-variables": FileText,
               "privacidad-no-cloud": Lock,
               "maxima-automatizacion": Sparkles
             };
@@ -150,6 +150,16 @@ export default function ExecutiveOverview() {
               </div>
             );
           })}
+        </div>
+
+        {/* Post-MVP Delimitation Note */}
+        <div className="mt-4 pt-3 border-t border-neutral-200 dark:border-neutral-700 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 text-xs font-mono">
+          <div className="flex items-center gap-2">
+            <span className="b-badge b-badge-yellow text-[10px] font-bold shrink-0">POST-MVP (FUTURO)</span>
+            <span className="text-neutral-700 dark:text-neutral-300">
+              Módulos como la <strong>transcripción de voz/audiencias</strong> e interoperabilidad quedan delimitados para fases posteriores tras consolidar el MVP de Tutelas.
+            </span>
+          </div>
         </div>
       </div>
 
@@ -235,10 +245,10 @@ export default function ExecutiveOverview() {
             DEMOSTRACIÓN INTERACTIVA DEL MVP
           </span>
           <h4 className="text-base font-bold uppercase text-neutral-900 dark:text-neutral-100">
-            Simulador de Documentos con Líneas Resaltadas & Audios
+            Simulador de Documentos con Líneas Resaltadas
           </h4>
           <p className="text-xs text-neutral-600 dark:text-neutral-400 font-mono mt-1 max-w-xl">
-            Pruebe el reemplazo automático en documentos oficiales, la simulación de lectura de audios y el análisis de prompts anti-alucinaciones.
+            Pruebe el reemplazo automático en documentos oficiales, la validación de variables fácticas y el análisis de prompts anti-alucinaciones.
           </p>
         </div>
         <NavLink 

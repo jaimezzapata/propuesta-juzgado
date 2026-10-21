@@ -46,7 +46,7 @@ export const NAV_ITEMS = [
     title: 'Arquitectura y Stack',
     short: 'Stack & IA',
     icon: Cpu,
-    description: 'Tecnologías, RAG legal, audio y comparador de modelos'
+    description: 'Tecnologías, RAG legal, arquitectura segura y comparador de modelos'
   },
   {
     path: '/alcance-mvp',

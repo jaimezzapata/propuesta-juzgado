@@ -10,7 +10,6 @@ import {
   Scale,
   Users,
   Highlighter,
-  Mic,
   Sliders,
   BarChart3,
   BookOpen,
@@ -33,7 +32,7 @@ export default function ProductDefinitionPage() {
           1. Definición del Producto y Flujo Operativo
         </h1>
         <p className="text-sm text-neutral-700 dark:text-neutral-300 font-mono mt-1">
-          Qué es el asistente, cómo opera la jerarquía Jefe-Sustanciador, reemplazo en documentos base y procesamiento de audio local.
+          Qué es el asistente, cómo opera la jerarquía Jefe-Sustanciador, reemplazo en documentos base y asistencia de redacción local.
         </p>
       </div>
 
@@ -44,7 +43,7 @@ export default function ProductDefinitionPage() {
           <span>Concepto Central del Software</span>
         </h2>
         <p className="text-sm sm:text-base leading-relaxed text-neutral-800 dark:text-neutral-200 mb-4">
-          Desarrollo de una <strong>aplicación web segura con Inteligencia Artificial</strong>, diseñada para automatizar la sustitución de fragmentos variables en <strong>documentos base con líneas resaltadas</strong>, transcribir audios de audiencias a texto estructurado y asistir al funcionario judicial en la redacción de providencias en el <strong>Juzgado de Familia 4</strong>, con <strong>mínimos clics</strong> y <strong>sin subir expedientes a la nube</strong>.
+          Desarrollo de una <strong>aplicación web segura con Inteligencia Artificial</strong>, diseñada para automatizar la sustitución de fragmentos variables en <strong>documentos base con líneas resaltadas</strong>, estructurar los hechos del caso y asistir al funcionario judicial en la redacción de providencias en el <strong>Juzgado de Familia 4</strong>, con <strong>mínimos clics</strong> y <strong>sin subir expedientes a la nube</strong>.
         </p>
 
         <div className="p-3 bg-neutral-100 dark:bg-neutral-800 border-l-4 border-[#2563eb] rounded-r font-mono text-xs text-neutral-800 dark:text-neutral-200">
@@ -143,7 +142,7 @@ export default function ProductDefinitionPage() {
                 </li>
                 <li className="flex items-start gap-2">
                   <span className="text-[#e11d48] font-bold">✕</span>
-                  <span>Tiempo excesivo escuchando y transcribiendo testimonios o audiencias manualmente.</span>
+                  <span>Tiempo excesivo buscando, validando y redactando manualmente los hechos de cada expediente.</span>
                 </li>
                 <li className="flex items-start gap-2">
                   <span className="text-[#e11d48] font-bold">✕</span>
@@ -169,7 +168,7 @@ export default function ProductDefinitionPage() {
                 </li>
                 <li className="flex items-start gap-2">
                   <span className="text-[#059669] font-bold">✓</span>
-                  <span><strong>Transcripción de Audio en 1 Clic:</strong> Carga de grabaciones para estructurar antecedentes automáticamente.</span>
+                  <span><strong>Estructuración Fáctica en 1 Clic:</strong> Extracción ordenada de antecedentes y variables para poblar la providencia.</span>
                 </li>
                 <li className="flex items-start gap-2">
                   <span className="text-[#059669] font-bold">✓</span>

@@ -15,7 +15,6 @@ import {
   FileText, 
   Edit3, 
   Upload, 
-  Mic,
   Highlighter,
   BarChart3,
   Users,
@@ -37,9 +36,6 @@ export default function ScopeMVPPage() {
 
   // Visual Highlight of Replaced Lines in Base Document
   const [highlightLines, setHighlightLines] = useState(true);
-
-  // Audio Speech-to-Text Simulation
-  const [isTranscribingAudio, setIsTranscribingAudio] = useState(false);
 
   // Anti-Hallucination Prompt Validation Result
   const [promptValidation, setPromptValidation] = useState(null);
@@ -260,28 +256,6 @@ JUEZ CUARTO DE FAMILIA`;
     }, 450);
   };
 
-  // Trigger simulated audio transcription
-  const handleSimulateAudioTranscription = () => {
-    setIsTranscribingAudio(true);
-    setTimeout(() => {
-      setIsTranscribingAudio(false);
-      setForm(prev => ({
-        ...prev,
-        hechos: "En audiencia virtual grabada, la accionante manifiesta que padece melanoma metastásico diagnosticado por oncología. La EPS accionada ha revocado en tres ocasiones las órdenes de dispensación del medicamento Pembrolizumab 100mg argumentando fallas de inventario en su operador logístico.",
-        pretension: "Entrega inmediata del fármaco oncológico Pembrolizumab 100mg, continuidad sin dilaciones del tratamiento y exoneración de copagos por falta de capacidad económica.",
-        medidaCautelar: true,
-        medidaCautelarTexto: "Ordenar a la EPS accionada la dispensación del medicamento en el término perentorio de 24 horas bajo apremio de sanciones por desacato."
-      }));
-      showAlert({
-        type: 'success',
-        title: 'Transcripción de Audio Exitosa (Speech-to-Text Local)',
-        message: 'El audio de la audiencia fue transcrito localmente sin subirlo a la nube. Los hechos, pretensión y orden de medida cautelar se estructuraron automáticamente en la plantilla.',
-        confirmText: 'Ver Documento'
-      });
-      triggerSimulateAnimation();
-    }, 1200);
-  };
-
   // Anti-hallucination prompt validator
   const handleValidatePrompt = () => {
     const hasAccionante = form.accionante && form.accionante.length > 3;
@@ -418,7 +392,7 @@ JUEZ CUARTO DE FAMILIA`;
           5. Alcance Técnico y Simulador MVP (Demo)
         </h1>
         <p className="text-sm text-neutral-700 dark:text-neutral-300 font-mono mt-1">
-          Sustitución en <strong>documentos con líneas resaltadas</strong>, lectura de <strong>audios</strong>, <strong>asistente corrector de prompts</strong> y analítica por perfiles.
+          Sustitución en <strong>documentos con líneas resaltadas</strong>, <strong>asistente corrector de prompts</strong>, validación anti-alucinaciones y analítica por perfiles.
         </p>
       </div>
 
@@ -516,7 +490,7 @@ JUEZ CUARTO DE FAMILIA`;
                 }`}
               >
                 <Sliders size={13} />
-                <span>1. Caso / Audio</span>
+                <span>1. Caso / Variables</span>
               </button>
               <button
                 onClick={() => setActiveTab('template')}
@@ -547,28 +521,23 @@ JUEZ CUARTO DE FAMILIA`;
               )}
             </div>
 
-            {/* TAB 1: EDITABLE CASE VARIABLES & AUDIO */}
+            {/* TAB 1: EDITABLE CASE VARIABLES */}
             {activeTab === 'variables' && (
               <div className="space-y-3">
-                {/* Audio & Prompt Assistant Action Bar */}
-                <div className="p-2.5 bg-neutral-100 dark:bg-neutral-800/80 rounded border border-neutral-300 dark:border-neutral-700 flex flex-wrap items-center gap-2">
-                  <button
-                    onClick={handleSimulateAudioTranscription}
-                    disabled={isTranscribingAudio}
-                    className="b-btn text-[11px] py-1 px-2.5 bg-purple-50 text-purple-900 dark:bg-purple-950/60 dark:text-purple-200 border-purple-400 font-bold flex items-center gap-1.5 hover:bg-purple-100"
-                    title="Escuchar audio de audiencia o testimonio y redactar los hechos"
-                  >
-                    <Mic size={13} className={isTranscribingAudio ? 'animate-pulse text-[#e11d48]' : 'text-purple-600'} />
-                    <span>{isTranscribingAudio ? 'Transcribiendo audio...' : 'Transcribir Audio (Audiencia)'}</span>
-                  </button>
+                {/* Prompt Assistant Action Bar */}
+                <div className="p-2.5 bg-neutral-100 dark:bg-neutral-800/80 rounded border border-neutral-300 dark:border-neutral-700 flex flex-wrap items-center justify-between gap-2">
+                  <div className="flex items-center gap-1.5 text-[11px] font-bold text-neutral-700 dark:text-neutral-300">
+                    <Sparkles size={13} className="text-[#2563eb]" />
+                    <span>Asistente de Validación:</span>
+                  </div>
 
                   <button
                     onClick={handleValidatePrompt}
-                    className="b-btn text-[11px] py-1 px-2.5 bg-white dark:bg-neutral-900 text-neutral-800 dark:text-neutral-200 border-neutral-400 font-bold flex items-center gap-1.5"
+                    className="b-btn text-[11px] py-1 px-3 bg-white dark:bg-neutral-900 text-neutral-800 dark:text-neutral-200 border-neutral-400 font-bold flex items-center gap-1.5 hover:bg-neutral-100 dark:hover:bg-neutral-800"
                     title="Analizar y verificar el prompt para evitar alucinaciones"
                   >
                     <Sliders size={13} className="text-[#2563eb]" />
-                    <span>Validar Prompt IA</span>
+                    <span>Validar Variables IA</span>
                   </button>
                 </div>
 
@@ -1002,6 +971,17 @@ JUEZ CUARTO DE FAMILIA`;
             Estructuración del problema jurídico, síntesis probatoria, cita de sentencias hito de la Corte Constitucional y proyecto de parte resolutiva para el Juez.
           </p>
         </div>
+      </div>
+
+      {/* MVP Scope Delimitation Note: Out of Scope for MVP */}
+      <div className="p-3.5 bg-neutral-50 dark:bg-neutral-800/60 border border-neutral-200 dark:border-neutral-700 rounded-lg text-xs font-mono flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+        <div className="flex items-center gap-2">
+          <span className="b-badge b-badge-yellow text-[10px] shrink-0 font-bold">DELIMITACIÓN MVP</span>
+          <span className="text-neutral-700 dark:text-neutral-300">
+            <strong>Módulos Delimitados para Fases Futuras (Post-MVP):</strong> Transcripción de audios de audiencias, integración con plataformas externas de la Rama Judicial y firma digital.
+          </span>
+        </div>
+        <span className="text-[11px] text-neutral-500 shrink-0 font-bold">Foco 100%: Plantillas & Tutelas</span>
       </div>
     </div>
   );

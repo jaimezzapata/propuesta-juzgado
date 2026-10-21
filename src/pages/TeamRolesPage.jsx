@@ -214,7 +214,7 @@ export default function TeamRolesPage() {
               </li>
               <li className="flex items-start gap-1.5">
                 <CheckCircle2 size={13} className="text-[#2563eb] shrink-0 mt-0.5" />
-                <span>Carga textos o audios y recibe ayuda del corrector de prompts.</span>
+                <span>Carga los hechos del caso y recibe ayuda del corrector de prompts.</span>
               </li>
               <li className="flex items-start gap-1.5">
                 <CheckCircle2 size={13} className="text-[#2563eb] shrink-0 mt-0.5" />
@@ -240,7 +240,7 @@ export default function TeamRolesPage() {
           <div className="mb-3 font-mono text-xs">
             <div className="font-bold text-neutral-600 dark:text-neutral-400 uppercase mb-1">Compromiso Técnico:</div>
             <p className="p-2.5 bg-neutral-100 dark:bg-neutral-800 rounded text-neutral-900 dark:text-neutral-100 font-bold">
-              Diseño, desarrollo web local seguro, transcripción de audio, sustitución de líneas resaltadas y aseguramiento de calidad con aprendices.
+              Diseño, desarrollo web local seguro, sustitución de líneas resaltadas, asistencia inteligente de prompts y aseguramiento de calidad con aprendices.
             </p>
           </div>
 

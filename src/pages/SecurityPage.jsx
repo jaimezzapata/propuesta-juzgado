@@ -32,7 +32,7 @@ export default function SecurityPage() {
           Garantía de Aislamiento Total & Protocolo Zero-Cloud
         </h2>
         <p className="text-sm text-neutral-800 dark:text-neutral-200 leading-relaxed mb-3">
-          Para dar estricto cumplimiento al requerimiento del Juzgado de <strong>no subir expedientes ni documentos completos a la nube</strong>, la arquitectura implementa una separación criptográfica entre <strong>variables privadas locales</strong> (nombres de personas, cédulas, diagnósticos y grabaciones de audio) y el <strong>contexto normativo</strong> de la IA.
+          Para dar estricto cumplimiento al requerimiento del Juzgado de <strong>no subir expedientes ni documentos completos a la nube</strong>, la arquitectura implementa una separación criptográfica entre <strong>variables privadas locales</strong> (nombres de personas, cédulas, diagnósticos y datos sensibles del expediente) y el <strong>contexto normativo</strong> de la IA.
         </p>
         <div className="flex flex-wrap gap-2">
           <span className="b-badge b-badge-green font-mono text-xs font-bold">
@@ -55,7 +55,7 @@ export default function SecurityPage() {
             <div className="font-bold text-[#059669] mb-1">PROCESADO ESTRICTAMENTE EN LOCAL (DESPACHO):</div>
             <ul className="space-y-1 text-neutral-700 dark:text-neutral-300">
               <li>• Identificación de las partes (accionante, accionado, menores).</li>
-              <li>• Archivos de audio (declaraciones, notas de voz de audiencias).</li>
+              <li>• Archivos y expedientes originales en PDF/Word del caso.</li>
               <li>• Ensamblaje y descarga del documento final (.docx / PDF).</li>
               <li>• Almacenamiento de expedientes y métricas internas.</li>
             </ul>

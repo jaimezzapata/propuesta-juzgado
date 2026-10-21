@@ -82,24 +82,22 @@ La propuesta establece una delimitación clara entre las dos entidades colaborad
 propuesta-juzgado/
 ├── public/                  # Favicons y recursos públicos
 ├── src/
-│   ├── assets/              # Imágenes e ilustraciones
-│   ├── components/          # Componentes reutilizables (Layout, Header, Footer)
+│   ├── components/          # Componentes reutilizables (Layout y navegación)
 │   ├── context/             # Contexto global (AlertContext brutalista)
 │   ├── data/
+│   │   ├── legalTemplates.js# Plantillas judiciales y motor de compilación
 │   │   ├── navigation.js    # Definición de rutas y navegación
-│   │   └── proposalData.js  # Metadatos, casos sintéticos y comparativas
+│   │   └── proposalData.js  # Metadatos, casos sintéticos y matriz RACI
 │   ├── pages/
 │   │   ├── ExecutiveOverview.jsx      # 00 // Ficha técnica y pilares
 │   │   ├── ProductDefinitionPage.jsx  # 01 // Problemática y transformación
-│   │   ├── ScopeMVPPage.jsx           # 02 // Simulador MVP con inputs editables
+│   │   ├── ScopeMVPPage.jsx           # 02 // Simulador MVP con lector y editor de formatos
 │   │   ├── ArchitecturePage.jsx       # 03 // Stack tecnológico y comparador IA
 │   │   ├── SecurityPage.jsx           # 04 // Protocolo de Mocking y privacidad
-│   │   ├── TeamRolesPage.jsx          # 05 // Metodología y matriz RACI
-│   │   └── DossierDocumentPage.jsx    # DOC // Dossier imprimible consolidado
+│   │   └── TeamRolesPage.jsx          # 05 // Metodología y gobernanza institucional
 │   ├── utils/
-│   │   ├── documentExporter.js        # Exportación en Word (.doc) y PDF
-│   │   └── legalDocumentGenerator.js  # Motor generador de providencias en base al Dec. 2591
-│   ├── App.jsx              # Configuración de rutas y tema
+│   │   └── documentExporter.js        # Exportación en Word (.doc) y PDF judicial
+│   ├── App.jsx              # Configuración de rutas y tema (Modo Claro por defecto)
 │   ├── index.css            # Tokens de diseño neo-brutalista
 │   └── main.jsx             # Punto de entrada
 ├── package.json

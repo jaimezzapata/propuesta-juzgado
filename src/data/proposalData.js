@@ -193,5 +193,3 @@ export const RACI_MATRIX = [
     juzgado: "Accountable / Aprobación (A)"
   }
 ];
-
-export const SPRINTS = [];

@@ -23,10 +23,9 @@ export default function App() {
   const [isDark, setIsDark] = useState(() => {
     if (typeof window !== 'undefined') {
       const saved = localStorage.getItem('j4_theme');
-      if (saved) return saved === 'dark';
-      return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+      if (saved !== null) return saved === 'dark';
     }
-    return false;
+    return false; // Por defecto modo claro
   });
   const [selectedEngine, setSelectedEngine] = useState('gemini');
 

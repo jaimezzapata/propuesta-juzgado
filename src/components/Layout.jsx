@@ -1,27 +1,49 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { NavLink, useLocation, useNavigate } from 'react-router-dom';
 import { 
-  Scale, 
   Moon, 
   Sun, 
   Menu, 
   X, 
   ArrowLeft, 
   ArrowRight, 
-  CheckCircle2, 
-  Printer,
-  ShieldCheck 
+  ShieldCheck,
+  Users
 } from 'lucide-react';
 import { NAV_ITEMS } from '../data/navigation';
-import { PROPOSAL_META } from '../data/proposalData';
+import { PROPOSAL_META, RESEARCH_TEAM } from '../data/proposalData';
 
 export default function Layout({ children, isDark, setIsDark, selectedEngine }) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [showTeamModal, setShowTeamModal] = useState(false);
+  const teamDropdownRef = useRef(null);
   const location = useLocation();
   const navigate = useNavigate();
 
+  // Cerrar el popover de integrantes al hacer clic fuera o presionar Escape
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (teamDropdownRef.current && !teamDropdownRef.current.contains(event.target)) {
+        setShowTeamModal(false);
+      }
+    }
+    function handleKeyDown(event) {
+      if (event.key === 'Escape') {
+        setShowTeamModal(false);
+      }
+    }
+
+    if (showTeamModal) {
+      document.addEventListener('mousedown', handleClickOutside);
+      document.addEventListener('keydown', handleKeyDown);
+    }
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [showTeamModal]);
+
   const currentIndex = NAV_ITEMS.findIndex(item => item.path === location.pathname);
-  const currentItem = NAV_ITEMS[currentIndex] || NAV_ITEMS[0];
   const prevItem = currentIndex > 0 ? NAV_ITEMS[currentIndex - 1] : null;
   const nextItem = currentIndex < NAV_ITEMS.length - 1 ? NAV_ITEMS[currentIndex + 1] : null;
 
@@ -71,6 +93,75 @@ export default function Layout({ children, isDark, setIsDark, selectedEngine }) 
 
           {/* Right Actions */}
           <div className="flex items-center gap-2">
+            {/* Team Members Button & Popover */}
+            <div className="relative" ref={teamDropdownRef}>
+              <button
+                onClick={() => setShowTeamModal(!showTeamModal)}
+                className={`b-btn text-xs py-1.5 px-2.5 flex items-center gap-1.5 transition-all ${
+                  showTeamModal ? 'bg-[#fde047] text-[#18181b]' : 'bg-white dark:bg-[#181a1f]'
+                }`}
+                title="Integrantes"
+                aria-label="Ver integrantes de trabajo"
+                aria-expanded={showTeamModal}
+              >
+                <Users size={16} className="shrink-0" />
+                <span className="hidden sm:inline font-mono font-bold text-xs">
+                  Integrantes
+                </span>
+                <span className="px-1.5 py-0.2 font-mono text-[10px] font-black rounded-xs bg-[#18181b] text-white dark:bg-white dark:text-[#18181b]">
+                  {RESEARCH_TEAM.length}
+                </span>
+              </button>
+
+              {/* Popover Card */}
+              {showTeamModal && (
+                <div 
+                  className="absolute right-0 mt-2 w-72 sm:w-80 bg-white dark:bg-[#1c1e22] border-2 border-[#18181b] dark:border-[#f4f4f5] shadow-[4px_4px_0px_#18181b] dark:shadow-[4px_4px_0px_#f4f4f5] rounded-md p-3.5 z-50 animate-in fade-in duration-150"
+                  role="dialog"
+                  aria-label="Integrantes de trabajo"
+                >
+                  <div className="flex items-center justify-between pb-2 mb-2.5 border-b-2 border-neutral-200 dark:border-neutral-800">
+                    <div className="flex items-center gap-2">
+                      <div className="w-6 h-6 rounded bg-[#fde047] border border-[#18181b] flex items-center justify-center text-[#18181b]">
+                        <Users size={13} />
+                      </div>
+                      <span className="font-mono text-xs font-bold uppercase tracking-wider text-neutral-900 dark:text-neutral-100">
+                        Integrantes
+                      </span>
+                    </div>
+                    <button
+                      onClick={() => setShowTeamModal(false)}
+                      className="p-1 text-neutral-500 hover:text-neutral-900 dark:hover:text-white rounded"
+                      aria-label="Cerrar ventana de integrantes"
+                    >
+                      <X size={15} />
+                    </button>
+                  </div>
+
+                  <div className="space-y-2">
+                    {RESEARCH_TEAM.map((member) => (
+                      <div
+                        key={member.id}
+                        className="flex items-center gap-3 p-2.5 bg-neutral-50 dark:bg-neutral-800/60 border border-neutral-200 dark:border-neutral-700/80 rounded"
+                      >
+                        <div 
+                          className="w-8 h-8 rounded shrink-0 border border-[#18181b] dark:border-white font-mono text-xs font-black flex items-center justify-center text-[#18181b]"
+                          style={{ backgroundColor: member.color }}
+                        >
+                          {member.iniciales}
+                        </div>
+                        <div className="min-w-0 flex-1">
+                          <p className="font-bold text-xs sm:text-sm text-neutral-900 dark:text-neutral-100 leading-snug">
+                            {member.nombre}
+                          </p>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+
             <button
               onClick={() => setIsDark(!isDark)}
               className="b-btn text-xs p-2"

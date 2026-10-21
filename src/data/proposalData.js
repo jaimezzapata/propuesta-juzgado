@@ -193,3 +193,24 @@ export const RACI_MATRIX = [
     juzgado: "Accountable / Aprobación (A)"
   }
 ];
+
+export const RESEARCH_TEAM = [
+  {
+    id: "jaime-zapata",
+    nombre: "Jaime Alberto Zapata Valencia",
+    iniciales: "JZ",
+    color: "#fde047"
+  },
+  {
+    id: "jhon-valencia",
+    nombre: "Jhon Freddy Valencia Gomez",
+    iniciales: "JV",
+    color: "#93c5fd"
+  },
+  {
+    id: "deymer-miranda",
+    nombre: "Deymer Miranda Montoya",
+    iniciales: "DM",
+    color: "#86efac"
+  }
+];

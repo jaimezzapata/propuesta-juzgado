@@ -8,7 +8,6 @@ import ScopeMVPPage from './pages/ScopeMVPPage';
 import ArchitecturePage from './pages/ArchitecturePage';
 import SecurityPage from './pages/SecurityPage';
 import TeamRolesPage from './pages/TeamRolesPage';
-import DossierDocumentPage from './pages/DossierDocumentPage';
 
 // Scroll to top helper on route change
 function ScrollToTop() {
@@ -65,14 +64,6 @@ export default function App() {
             />
             <Route path="/seguridad" element={<SecurityPage />} />
             <Route path="/equipo-roles" element={<TeamRolesPage />} />
-            <Route 
-              path="/dossier" 
-              element={
-                <DossierDocumentPage 
-                  selectedEngine={selectedEngine}
-                />
-              } 
-            />
           </Routes>
         </Layout>
       </AlertProvider>

@@ -18,7 +18,7 @@ import { PROPOSAL_META } from '../data/proposalData';
 export default function ExecutiveOverview() {
   return (
     <div className="space-y-6">
-      {/* Top Banner / Dossier Header */}
+      {/* Top Banner / Ficha Técnica */}
       <div className="clean-card bg-white dark:bg-[#1c1e22] border-l-4 border-l-[#fde047]">
         <div className="flex flex-wrap items-center justify-between gap-3 mb-3">
           <div className="flex items-center gap-2">
@@ -50,11 +50,7 @@ export default function ExecutiveOverview() {
 
           <NavLink to="/alcance-mvp" className="b-btn text-xs bg-neutral-100 dark:bg-neutral-800">
             <Sparkles size={14} className="text-[#2563eb]" />
-            <span>Ver Maqueta del MVP (Tutelas)</span>
-          </NavLink>
-
-          <NavLink to="/dossier" className="b-btn text-xs bg-neutral-100 dark:bg-neutral-800">
-            <span>Exportar Documento Completo</span>
+            <span>Probar Simulador MVP (Tutelas)</span>
           </NavLink>
         </div>
       </div>

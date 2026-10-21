@@ -71,15 +71,6 @@ export default function Layout({ children, isDark, setIsDark, selectedEngine }) 
 
           {/* Right Actions */}
           <div className="flex items-center gap-2">
-            <NavLink
-              to="/dossier"
-              className="b-btn text-xs py-1.5 px-3 bg-neutral-100 dark:bg-neutral-800"
-              title="Ver versión documental imprimible"
-            >
-              <Printer size={14} />
-              <span className="hidden sm:inline">Dossier PDF</span>
-            </NavLink>
-
             <button
               onClick={() => setIsDark(!isDark)}
               className="b-btn text-xs p-2"

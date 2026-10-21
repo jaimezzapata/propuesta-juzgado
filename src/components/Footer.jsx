@@ -1,8 +1,8 @@
 import React from 'react';
-import { Scale, Heart, ShieldCheck, Printer, ArrowUp } from 'lucide-react';
+import { Scale, Heart, ShieldCheck, ArrowUp } from 'lucide-react';
 import { PROPOSAL_META } from '../data/proposalData';
 
-export default function Footer({ onOpenDossier }) {
+export default function Footer() {
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
@@ -26,14 +26,6 @@ export default function Footer({ onOpenDossier }) {
         </div>
 
         <div className="flex flex-wrap items-center gap-3">
-          <button
-            onClick={onOpenDossier}
-            className="b-btn b-btn-primary text-xs py-1.5 px-3"
-          >
-            <Printer size={14} />
-            <span>Ver Dossier Imprimible</span>
-          </button>
-
           <button
             onClick={scrollToTop}
             className="b-btn text-xs py-1.5 px-3 bg-neutral-800 text-white hover:bg-neutral-700"

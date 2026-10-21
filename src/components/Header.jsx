@@ -1,8 +1,8 @@
 import React from 'react';
-import { Scale, ShieldCheck, Printer, Moon, Sun, FileText, CheckCircle2 } from 'lucide-react';
+import { Scale, ShieldCheck, Moon, Sun, FileText, CheckCircle2 } from 'lucide-react';
 import { PROPOSAL_META } from '../data/proposalData';
 
-export default function Header({ isDark, setIsDark, onOpenDossier }) {
+export default function Header({ isDark, setIsDark }) {
   return (
     <header className="sticky top-0 z-50 bg-[#f7f4ea] dark:bg-[#0f1115] border-b-[3px] border-[#111111] dark:border-[#f3f4f6]">
       {/* Upper Judicial Ticker */}
@@ -68,16 +68,6 @@ export default function Header({ isDark, setIsDark, onOpenDossier }) {
             aria-label="Toggle theme"
           >
             {isDark ? <Sun size={16} className="text-[#ffe600]" /> : <Moon size={16} />}
-          </button>
-
-          <button
-            onClick={onOpenDossier}
-            className="b-btn b-btn-primary text-xs"
-            title="Ver expediente técnico completo para imprimir o exportar"
-          >
-            <Printer size={15} />
-            <span className="hidden sm:inline">Exportar / Imprimir</span>
-            <span className="sm:hidden">Dossier</span>
           </button>
         </div>
       </div>

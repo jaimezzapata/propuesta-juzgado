@@ -4,8 +4,7 @@ import {
   CheckSquare, 
   Cpu, 
   Lock, 
-  Users, 
-  Printer 
+  Users 
 } from 'lucide-react';
 
 export const NAV_ITEMS = [
@@ -56,13 +55,5 @@ export const NAV_ITEMS = [
     short: 'Gobernanza',
     icon: Users,
     description: 'Coordinación interinstitucional SENA - Juzgado 4'
-  },
-  {
-    path: '/dossier',
-    num: 'DOC',
-    title: 'Dossier Formal Imprimible',
-    short: 'Dossier',
-    icon: Printer,
-    description: 'Documento completo oficial para exportar o imprimir'
   }
 ];

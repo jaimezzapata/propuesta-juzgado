@@ -15,18 +15,20 @@ La interfaz adopta los principios del **Neo-Brutalismo**, adaptados a un context
 
 ## 2. Paleta Cromática Oficial
 
-El esquema de color se basa en un contraste riguroso con tres tonos fundamentales:
+El esquema de color se basa en la paleta sobria, prestigiosa y judicial seleccionada:
 
 | Rol | Nombre | HEX | Tailwind / Utilidad | Uso principal |
 |---|---|---|---|---|
-| **Estructura & Texto** | Negro Puro / Carbón | `#000000` / `#121212` | `bg-black`, `text-black`, `border-black` | Bordes gruesos de elementos, sombras duras, textos de alto contraste, encabezados y barras principales. |
-| **Superficie & Base** | Blanco / Hueso | `#FFFFFF` / `#F8F9FA` | `bg-white`, `bg-[#F8F9FA]` | Fondos de la aplicación, paneles de trabajo, tarjetas de expedientes y lectura de providencias. |
-| **Acento Primario** | Amarillo Sobrio | `#FFE500` / `#F5C518` / `#FACC15` | `bg-amber-400`, `bg-[#F5C518]` | Botones de acción primaria, badges de urgencia/medidas cautelares, focus states y resaltados clave. |
+| **Estructura, Bordes & Sombras** | Azul Noche / Pizarra Oscuro | `#0F172A` | `bg-[#0F172A]`, `text-[#0F172A]`, `border-[#0F172A]` | Bordes gruesos sólidos, sombras duras de bloque, textos de máximo contraste y encabezados. |
+| **Identidad Institucional** | Azul Petróleo Profundo | `#0F2537` | `bg-[#0F2537]`, `text-white` | Barra superior del juzgado, encabezados principales, tarjetas de autoridad del Despacho. |
+| **Autoridad & Acciones Críticas** | Granate / Vinotinto Judicial | `#6B1D2F` | `bg-[#6B1D2F]`, `hover:bg-[#541624]`, `text-white` | Botones de acción decisoria, badges de estado urgente, medidas provisionales y alertas procesales. |
+| **Acento Primario & Distinción** | Dorado / Ocre Judicial | `#9A7B3E` | `bg-[#9A7B3E]`, `hover:bg-[#866933]`, `text-white` | Botones de acción primaria, badges de relevancia, pestañas activas, elementos destacados y focus states. |
+| **Superficie de Trabajo & Lectura** | Blanco / Hueso Limpio | `#FFFFFF` / `#F8F9FA` | `bg-white`, `bg-[#F8F9FA]` | Fondos de la aplicación, paneles de trabajo, tarjetas de expedientes y lectura nítida de providencias. |
 
-### Colores de Apoyo Semántico Procesal (Uso Restringido):
-- **Alerta / Rechazo / Vencimiento:** Rojo sobrio de alto contraste (`#DC2626` con borde negro).
-- **Éxito / Aprobado / Radicado:** Verde sobrio (`#16A34A` con borde negro).
-- **Informativo / En Trámite:** Azul sobrio neutro (`#2563EB` con borde negro).
+### Elementos de Contraste y Sombras:
+- Bordes: `border-2 border-[#0F172A]`
+- Sombras de bloque: `shadow-[3px_3px_0px_#0F172A]` o `shadow-[4px_4px_0px_#0F172A]`
+
 
 ---
 

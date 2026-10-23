@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { Scale, Lock, LogIn, ArrowRight, ShieldCheck, UserCheck } from "lucide-react";
+import { Scale, LogIn, ArrowRight, ShieldCheck, UserCheck } from "lucide-react";
 import { SesionUsuario } from "../types";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
@@ -31,17 +31,17 @@ export const LoginView: React.FC<LoginViewProps> = ({
 
   return (
     <div className="min-h-screen bg-[#F8F9FA] flex flex-col items-center justify-center p-4">
-      <div className="w-full max-w-md bg-white border-3 border-black shadow-[8px_8px_0px_#000]">
-        {/* Cabecera Brutalista */}
-        <div className="bg-[#FACC15] border-b-3 border-black p-6 text-black flex items-center gap-3">
-          <div className="p-2.5 bg-black text-[#FACC15] border-2 border-black">
+      <div className="w-full max-w-md bg-white border-3 border-[#0F172A] shadow-[8px_8px_0px_#0F172A]">
+        {/* Cabecera Brutalista con Paleta Judicial */}
+        <div className="bg-[#0F2537] border-b-3 border-[#0F172A] p-6 text-white flex items-center gap-3">
+          <div className="p-2.5 bg-[#9A7B3E] text-white border-2 border-[#0F172A] shadow-[2px_2px_0px_#0F172A]">
             <Scale className="w-8 h-8" />
           </div>
           <div>
-            <span className="text-[10px] font-black uppercase tracking-widest text-neutral-800 block">
+            <span className="text-[10px] font-black uppercase tracking-widest text-[#9A7B3E] block">
               Rama Judicial de Colombia
             </span>
-            <h1 className="text-xl font-black uppercase tracking-tight text-black">
+            <h1 className="text-xl font-black uppercase tracking-tight text-white">
               Juzgado 4° de Familia
             </h1>
           </div>
@@ -49,7 +49,7 @@ export const LoginView: React.FC<LoginViewProps> = ({
 
         <div className="p-6 flex flex-col gap-5">
           <div>
-            <h2 className="text-sm font-black uppercase tracking-wider text-black">
+            <h2 className="text-sm font-black uppercase tracking-wider text-[#0F172A]">
               Autenticación Institucional
             </h2>
             <p className="text-xs font-semibold text-neutral-600 mt-0.5">
@@ -58,7 +58,7 @@ export const LoginView: React.FC<LoginViewProps> = ({
           </div>
 
           {error && (
-            <div className="p-3 bg-red-100 border-2 border-red-600 text-red-900 font-bold text-xs">
+            <div className="p-3 bg-red-100 border-2 border-[#6B1D2F] text-[#6B1D2F] font-bold text-xs">
               {error}
             </div>
           )}
@@ -94,8 +94,8 @@ export const LoginView: React.FC<LoginViewProps> = ({
           </form>
 
           {/* Acceso Rápido por Perfil */}
-          <div className="pt-4 border-t-2 border-black">
-            <span className="text-[11px] font-black uppercase tracking-wider text-neutral-700 block mb-2">
+          <div className="pt-4 border-t-2 border-[#0F172A]">
+            <span className="text-[11px] font-black uppercase tracking-wider text-[#0F172A] block mb-2">
               Perfiles Activos en el Despacho:
             </span>
             <div className="flex flex-col gap-2">
@@ -107,34 +107,34 @@ export const LoginView: React.FC<LoginViewProps> = ({
                     type="button"
                     onClick={() => onLogin(p.email, "123456")}
                     disabled={isSubmitting}
-                    className={`p-2.5 border-2 border-black flex items-center justify-between text-left transition-all ${
+                    className={`p-2.5 border-2 border-[#0F172A] flex items-center justify-between text-left transition-all ${
                       esJefe
-                        ? "bg-[#FACC15] hover:bg-[#F5C518] shadow-[2px_2px_0px_#000]"
-                        : "bg-white hover:bg-neutral-100 shadow-[2px_2px_0px_#000]"
+                        ? "bg-[#0F2537] text-white hover:bg-[#183952] shadow-[2px_2px_0px_#0F172A]"
+                        : "bg-white hover:bg-neutral-100 text-[#0F172A] shadow-[2px_2px_0px_#0F172A]"
                     }`}
                   >
                     <div className="flex items-center gap-2.5">
-                      <div className="p-1 bg-black text-white">
+                      <div className={`p-1 ${esJefe ? "bg-[#9A7B3E] text-white" : "bg-[#0F172A] text-white"}`}>
                         {esJefe ? (
-                          <ShieldCheck className="w-4 h-4 text-[#FACC15]" />
+                          <ShieldCheck className="w-4 h-4" />
                         ) : (
-                          <UserCheck className="w-4 h-4 text-white" />
+                          <UserCheck className="w-4 h-4" />
                         )}
                       </div>
                       <div>
-                        <span className="text-xs font-black text-black block leading-tight">
+                        <span className={`text-xs font-black block leading-tight ${esJefe ? "text-white" : "text-[#0F172A]"}`}>
                           {p.nombre}
                         </span>
-                        <span className="text-[10px] font-bold text-neutral-800">
+                        <span className={`text-[10px] font-bold ${esJefe ? "text-[#9A7B3E]" : "text-neutral-600"}`}>
                           {p.cargo}
                         </span>
                       </div>
                     </div>
                     <div className="flex items-center gap-1.5">
-                      <Badge variant={esJefe ? "black" : "neutral"} size="sm">
+                      <Badge variant={esJefe ? "gold" : "slate"} size="sm">
                         {esJefe ? "Jefe" : "Gestor"}
                       </Badge>
-                      <ArrowRight className="w-3.5 h-3.5 text-black" />
+                      <ArrowRight className={`w-3.5 h-3.5 ${esJefe ? "text-[#9A7B3E]" : "text-[#0F172A]"}`} />
                     </div>
                   </button>
                 );

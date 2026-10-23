@@ -19,20 +19,20 @@ export const GestorCard: React.FC<GestorCardProps> = ({
 }) => {
   return (
     <div
-      className={`border-2 border-black p-4 flex flex-col justify-between transition-all ${
+      className={`border-2 border-[#0F172A] p-4 flex flex-col justify-between transition-all ${
         gestor.activo
-          ? "bg-white shadow-[4px_4px_0px_#000]"
+          ? "bg-white shadow-[4px_4px_0px_#0F172A]"
           : "bg-neutral-100 opacity-80 border-dashed shadow-[2px_2px_0px_#666]"
       }`}
     >
       <div>
         <div className="flex items-start justify-between gap-2">
           <div className="flex items-center gap-2">
-            <div className="p-2 bg-black text-[#FACC15] border border-black">
+            <div className="p-2 bg-[#0F2537] text-[#9A7B3E] border border-[#0F172A]">
               <UserCheck className="w-5 h-5" />
             </div>
             <div>
-              <h3 className="text-base font-black text-black leading-tight">
+              <h3 className="text-base font-black text-[#0F172A] leading-tight">
                 {gestor.nombre}
               </h3>
               <p className="text-xs font-bold text-neutral-800">{gestor.cargo}</p>

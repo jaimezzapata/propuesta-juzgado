@@ -1,1 +1,15 @@
 @import "tailwindcss";
+
+@theme {
+  --color-juzgado-navy: #0F2537;
+  --color-juzgado-granate: #6B1D2F;
+  --color-juzgado-dorado: #9A7B3E;
+  --color-juzgado-pizarra: #0F172A;
+}
+
+:root {
+  --navy: #0F2537;
+  --granate: #6B1D2F;
+  --dorado: #9A7B3E;
+  --pizarra: #0F172A;
+}

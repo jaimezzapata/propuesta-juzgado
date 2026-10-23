@@ -13,14 +13,14 @@ export const TopBar: React.FC<TopBarProps> = ({ usuario, onLogout }) => {
   const esJefe = usuario.rol === "JEFE_DESPACHO";
 
   return (
-    <header className="bg-black text-white border-b-3 border-black p-4 mb-6 shadow-[0px_4px_0px_#000]">
+    <header className="bg-[#0F2537] text-white border-b-3 border-[#0F172A] p-4 mb-6 shadow-[0px_4px_0px_#0F172A]">
       <div className="max-w-6xl mx-auto flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
         <div className="flex items-center gap-3">
-          <div className="p-2 bg-[#FACC15] text-black border border-black">
+          <div className="p-2 bg-[#9A7B3E] text-white border-2 border-[#0F172A] shadow-[2px_2px_0px_#0F172A]">
             <Scale className="w-5 h-5" />
           </div>
           <div>
-            <span className="text-[10px] font-black uppercase tracking-widest text-[#FACC15] block">
+            <span className="text-[10px] font-black uppercase tracking-widest text-[#9A7B3E] block">
               Rama Judicial de Colombia // Distrito Medellín
             </span>
             <span className="text-base font-black uppercase text-white tracking-tight">
@@ -31,28 +31,28 @@ export const TopBar: React.FC<TopBarProps> = ({ usuario, onLogout }) => {
 
         <div className="flex items-center gap-3 w-full sm:w-auto justify-between sm:justify-end">
           <div className="flex items-center gap-2">
-            <div className="p-1 bg-white text-black">
+            <div className="p-1 bg-[#0F172A] text-white border border-white/20">
               {esJefe ? (
-                <ShieldCheck className="w-4 h-4 text-black" />
+                <ShieldCheck className="w-4 h-4 text-[#9A7B3E]" />
               ) : (
-                <UserCheck className="w-4 h-4 text-black" />
+                <UserCheck className="w-4 h-4 text-white" />
               )}
             </div>
             <div className="text-left">
               <span className="text-xs font-black text-white block leading-tight">
                 {usuario.nombre}
               </span>
-              <span className="text-[10px] font-bold text-neutral-400">
+              <span className="text-[10px] font-bold text-neutral-300">
                 {usuario.cargo}
               </span>
             </div>
-            <Badge variant={esJefe ? "yellow" : "white"} size="sm">
+            <Badge variant={esJefe ? "gold" : "white"} size="sm">
               {esJefe ? "Jefe de Despacho" : "Gestor"}
             </Badge>
           </div>
 
           <Button
-            variant="secondary"
+            variant="danger"
             size="sm"
             onClick={onLogout}
             className="flex items-center gap-1.5 text-xs"

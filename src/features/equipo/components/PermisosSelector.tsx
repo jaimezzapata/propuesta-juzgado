@@ -49,24 +49,24 @@ export const PermisosSelector: React.FC<PermisosSelectorProps> = ({
             <div
               key={p.id}
               onClick={() => onToggle(p.id)}
-              className={`p-2.5 border-2 border-black cursor-pointer select-none transition-all flex items-start gap-2.5 ${
+              className={`p-2.5 border-2 border-[#0F172A] cursor-pointer select-none transition-all flex items-start gap-2.5 ${
                 marcado
-                  ? "bg-[#FACC15] shadow-[2px_2px_0px_#000] translate-x-[-1px] translate-y-[-1px]"
-                  : "bg-white hover:bg-neutral-50 shadow-[1px_1px_0px_#000]"
+                  ? "bg-[#0F2537] text-white shadow-[2px_2px_0px_#0F172A] translate-x-[-1px] translate-y-[-1px]"
+                  : "bg-white hover:bg-neutral-50 text-[#0F172A] shadow-[1px_1px_0px_#0F172A]"
               }`}
             >
               <div
-                className={`w-4 h-4 mt-0.5 border-2 border-black flex items-center justify-center flex-shrink-0 ${
-                  marcado ? "bg-black text-[#FACC15]" : "bg-white"
+                className={`w-4 h-4 mt-0.5 border-2 border-[#0F172A] flex items-center justify-center flex-shrink-0 ${
+                  marcado ? "bg-[#9A7B3E] text-white" : "bg-white"
                 }`}
               >
                 {marcado && <Check className="w-3 h-3 stroke-[3]" />}
               </div>
               <div className="flex-1">
-                <span className="text-xs font-black uppercase tracking-tight block text-black">
+                <span className={`text-xs font-black uppercase tracking-tight block ${marcado ? "text-[#9A7B3E]" : "text-[#0F172A]"}`}>
                   {p.nombre}
                 </span>
-                <p className="text-[11px] font-medium text-neutral-800 leading-tight mt-0.5">
+                <p className={`text-[11px] font-medium leading-tight mt-0.5 ${marcado ? "text-neutral-200" : "text-neutral-700"}`}>
                   {p.descripcion}
                 </p>
               </div>

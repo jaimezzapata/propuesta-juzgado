@@ -2,14 +2,24 @@ import React from "react";
 
 export interface BadgeProps {
   children: React.ReactNode;
-  variant?: "yellow" | "black" | "white" | "success" | "danger" | "neutral";
+  variant?:
+    | "gold"
+    | "navy"
+    | "granate"
+    | "slate"
+    | "white"
+    | "yellow"
+    | "black"
+    | "success"
+    | "danger"
+    | "neutral";
   size?: "sm" | "md";
   className?: string;
 }
 
 export const Badge: React.FC<BadgeProps> = ({
   children,
-  variant = "yellow",
+  variant = "gold",
   size = "sm",
   className = "",
 }) => {
@@ -19,17 +29,21 @@ export const Badge: React.FC<BadgeProps> = ({
   };
 
   const variantStyles = {
-    yellow: "bg-[#FACC15] text-black border-black",
-    black: "bg-black text-white border-black",
-    white: "bg-white text-black border-black",
-    success: "bg-emerald-300 text-black border-black",
-    danger: "bg-rose-400 text-black border-black",
-    neutral: "bg-neutral-200 text-black border-black",
+    gold: "bg-[#9A7B3E] text-white border-[#0F172A]",
+    yellow: "bg-[#9A7B3E] text-white border-[#0F172A]",
+    navy: "bg-[#0F2537] text-white border-[#0F172A]",
+    granate: "bg-[#6B1D2F] text-white border-[#0F172A]",
+    danger: "bg-[#6B1D2F] text-white border-[#0F172A]",
+    slate: "bg-[#0F172A] text-white border-[#0F172A]",
+    black: "bg-[#0F172A] text-white border-[#0F172A]",
+    white: "bg-white text-[#0F172A] border-[#0F172A]",
+    success: "bg-emerald-700 text-white border-[#0F172A]",
+    neutral: "bg-neutral-200 text-[#0F172A] border-[#0F172A]",
   };
 
   return (
     <span
-      className={`inline-flex items-center font-extrabold uppercase tracking-wider border border-black shadow-[1px_1px_0px_#000] select-none ${sizeStyles[size]} ${variantStyles[variant]} ${className}`}
+      className={`inline-flex items-center font-extrabold uppercase tracking-wider border border-[#0F172A] shadow-[1px_1px_0px_#0F172A] select-none ${sizeStyles[size]} ${variantStyles[variant]} ${className}`}
     >
       {children}
     </span>

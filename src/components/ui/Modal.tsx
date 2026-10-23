@@ -42,25 +42,25 @@ export const Modal: React.FC<ModalProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-[1px] animate-fadeIn">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#0F172A]/70 backdrop-blur-[1px]">
       <div
-        className={`w-full ${widthStyles[maxWidth]} bg-white border-3 border-black shadow-[8px_8px_0px_#000] flex flex-col max-h-[90vh] overflow-hidden`}
+        className={`w-full ${widthStyles[maxWidth]} bg-white border-3 border-[#0F172A] shadow-[8px_8px_0px_#0F172A] flex flex-col max-h-[90vh] overflow-hidden`}
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="flex items-center justify-between p-4 bg-[#FACC15] border-b-2 border-black">
+        <div className="flex items-center justify-between p-4 bg-[#0F2537] border-b-2 border-[#0F172A] text-white">
           <div>
-            <h2 className="text-base font-black uppercase tracking-wider text-black">
+            <h2 className="text-base font-black uppercase tracking-wider text-white">
               {title}
             </h2>
             {subtitle && (
-              <p className="text-xs font-semibold text-neutral-800 mt-0.5">
+              <p className="text-xs font-semibold text-[#9A7B3E] mt-0.5">
                 {subtitle}
               </p>
             )}
           </div>
           <button
             onClick={onClose}
-            className="p-1 text-black hover:bg-black hover:text-white border-2 border-black transition-colors"
+            className="p-1 text-white hover:bg-[#9A7B3E] hover:text-white border-2 border-white/50 transition-colors"
             title="Cerrar ventana"
           >
             <X className="w-5 h-5" />

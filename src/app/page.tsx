@@ -54,13 +54,13 @@ export default function Home() {
         {esJefe ? (
           <div className="flex flex-col gap-6">
             {/* Pestañas de control del Jefe */}
-            <div className="flex border-b-2 border-black gap-2">
+            <div className="flex border-b-2 border-[#0F172A] gap-2">
               <button
                 type="button"
                 onClick={() => setSeccionJefe("formatos")}
-                className={`px-5 py-2.5 font-black uppercase text-xs border-2 border-b-0 border-black transition-all ${
+                className={`px-5 py-2.5 font-black uppercase text-xs border-2 border-b-0 border-[#0F172A] transition-all ${
                   seccionJefe === "formatos"
-                    ? "bg-[#FACC15] text-black shadow-[3px_-2px_0px_#000]"
+                    ? "bg-[#0F2537] text-[#9A7B3E] shadow-[3px_-2px_0px_#0F172A]"
                     : "bg-white text-neutral-600 hover:bg-neutral-100"
                 }`}
               >
@@ -69,9 +69,9 @@ export default function Home() {
               <button
                 type="button"
                 onClick={() => setSeccionJefe("equipo")}
-                className={`px-5 py-2.5 font-black uppercase text-xs border-2 border-b-0 border-black transition-all ${
+                className={`px-5 py-2.5 font-black uppercase text-xs border-2 border-b-0 border-[#0F172A] transition-all ${
                   seccionJefe === "equipo"
-                    ? "bg-[#FACC15] text-black shadow-[3px_-2px_0px_#000]"
+                    ? "bg-[#0F2537] text-[#9A7B3E] shadow-[3px_-2px_0px_#0F172A]"
                     : "bg-white text-neutral-600 hover:bg-neutral-100"
                 }`}
               >

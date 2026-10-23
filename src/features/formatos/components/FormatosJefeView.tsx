@@ -43,13 +43,13 @@ export const FormatosJefeView: React.FC<FormatosJefeViewProps> = ({ jefeId }) =>
   return (
     <div className="flex flex-col gap-5">
       {/* Selector de Pestaña Brutalista */}
-      <div className="flex border-b-2 border-black gap-2">
+      <div className="flex border-b-2 border-[#0F172A] gap-2">
         <button
           type="button"
           onClick={() => setTab("formatos")}
-          className={`px-4 py-2 font-black uppercase text-xs border-2 border-b-0 border-black transition-all ${
+          className={`px-4 py-2 font-black uppercase text-xs border-2 border-b-0 border-[#0F172A] transition-all ${
             tab === "formatos"
-              ? "bg-[#FACC15] text-black shadow-[2px_-2px_0px_#000]"
+              ? "bg-[#0F2537] text-[#9A7B3E] shadow-[2px_-2px_0px_#0F172A]"
               : "bg-white text-neutral-600 hover:bg-neutral-100"
           }`}
         >
@@ -58,9 +58,9 @@ export const FormatosJefeView: React.FC<FormatosJefeViewProps> = ({ jefeId }) =>
         <button
           type="button"
           onClick={() => setTab("asignaciones")}
-          className={`px-4 py-2 font-black uppercase text-xs border-2 border-b-0 border-black transition-all ${
+          className={`px-4 py-2 font-black uppercase text-xs border-2 border-b-0 border-[#0F172A] transition-all ${
             tab === "asignaciones"
-              ? "bg-[#FACC15] text-black shadow-[2px_-2px_0px_#000]"
+              ? "bg-[#0F2537] text-[#9A7B3E] shadow-[2px_-2px_0px_#0F172A]"
               : "bg-white text-neutral-600 hover:bg-neutral-100"
           }`}
         >

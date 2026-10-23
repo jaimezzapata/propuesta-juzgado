@@ -46,15 +46,15 @@ export const DiligenciarFormatoModal: React.FC<DiligenciarFormatoModalProps> = (
     >
       <div className="flex flex-col gap-4">
         {/* Banner de protección de plantilla */}
-        <div className="p-3 bg-amber-100 border-2 border-black flex items-start gap-2.5 text-xs text-black">
-          <ShieldAlert className="w-5 h-5 text-black flex-shrink-0 mt-0.5" />
+        <div className="p-3.5 bg-[#0F2537] text-white border-2 border-[#0F172A] shadow-[2px_2px_0px_#0F172A] flex items-start gap-2.5 text-xs">
+          <ShieldAlert className="w-5 h-5 text-[#9A7B3E] flex-shrink-0 mt-0.5" />
           <div>
-            <span className="font-black uppercase block">
+            <span className="font-black uppercase tracking-wider text-[#9A7B3E] block">
               Modo de Manipulación de Caso Concreto
             </span>
-            <p className="font-medium text-neutral-800">
+            <p className="font-medium text-neutral-200 mt-0.5">
               Puedes redactar y completar los hechos y datos de este caso específico.
-              <strong> La plantilla oficial del despacho permanece protegida e inmutable.</strong>
+              <strong className="text-white"> La plantilla oficial del despacho permanece protegida e inmutable.</strong>
             </p>
           </div>
         </div>

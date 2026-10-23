@@ -35,6 +35,7 @@ export const CrearEditarFormatoModal: React.FC<CrearEditarFormatoModalProps> = (
     plantilla,
     setPlantilla,
     archivoCargado,
+    archivoBuffer,
     isExtracting,
     errorArchivo,
     isSubmitting,
@@ -161,6 +162,7 @@ export const CrearEditarFormatoModal: React.FC<CrearEditarFormatoModalProps> = (
               titulo={titulo}
               codigo={codigo}
               contenido={plantilla}
+              archivoBuffer={archivoBuffer}
             />
           )}
         </div>

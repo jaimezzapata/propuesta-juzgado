@@ -16,6 +16,7 @@ export function useEditorFormato({ formatoInicial, onGuardar }: UseEditorFormato
   const [tipo, setTipo] = useState<TipoFormato>("AUTO_ADMISORIO");
   const [plantilla, setPlantilla] = useState("");
   const [archivoCargado, setArchivoCargado] = useState<string | null>(null);
+  const [archivoBuffer, setArchivoBuffer] = useState<ArrayBuffer | null>(null);
   const [isExtracting, setIsExtracting] = useState(false);
   const [errorArchivo, setErrorArchivo] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -29,6 +30,7 @@ export function useEditorFormato({ formatoInicial, onGuardar }: UseEditorFormato
       setTipo(formatoInicial.tipo);
       setPlantilla(formatoInicial.plantilla);
       setArchivoCargado(null);
+      setArchivoBuffer(null);
     } else {
       setCodigo(`FOR-${Date.now().toString().slice(-4)}`);
       setTitulo("");
@@ -36,6 +38,7 @@ export function useEditorFormato({ formatoInicial, onGuardar }: UseEditorFormato
       setTipo("AUTO_ADMISORIO");
       setPlantilla("");
       setArchivoCargado(null);
+      setArchivoBuffer(null);
     }
     setErrorArchivo(null);
   }, [formatoInicial]);
@@ -48,6 +51,9 @@ export function useEditorFormato({ formatoInicial, onGuardar }: UseEditorFormato
       if (res.success && res.text) {
         setPlantilla(res.text);
         setArchivoCargado(res.nombreArchivo);
+        if (res.arrayBuffer) {
+          setArchivoBuffer(res.arrayBuffer);
+        }
         if (!titulo) {
           const nombreLimpio = file.name.replace(/\.[^/.]+$/, "").replace(/[_-]/g, " ");
           setTitulo(nombreLimpio);
@@ -69,6 +75,7 @@ export function useEditorFormato({ formatoInicial, onGuardar }: UseEditorFormato
   const limpiarFormato = () => {
     setPlantilla("");
     setArchivoCargado(null);
+    setArchivoBuffer(null);
     setErrorArchivo(null);
   };
 
@@ -94,6 +101,7 @@ export function useEditorFormato({ formatoInicial, onGuardar }: UseEditorFormato
     plantilla,
     setPlantilla,
     archivoCargado,
+    archivoBuffer,
     isExtracting,
     errorArchivo,
     isSubmitting,

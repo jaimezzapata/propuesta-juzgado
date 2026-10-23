@@ -1,10 +1,14 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { Modal } from "@/components/ui/Modal";
 import { Input } from "@/components/ui/Input";
 import { Button } from "@/components/ui/Button";
 import { FormatoMaestro, FormFormatoMaestroValues, TipoFormato } from "../types";
+import { useEditorFormato } from "../hooks/useEditorFormato";
+import { CargarArchivoFormato } from "./CargarArchivoFormato";
+import { EditorPlantilla } from "./EditorPlantilla";
+import { VistaPreviaJudicial } from "./VistaPreviaJudicial";
 
 interface CrearEditarFormatoModalProps {
   isOpen: boolean;
@@ -19,50 +23,70 @@ export const CrearEditarFormatoModal: React.FC<CrearEditarFormatoModalProps> = (
   formato,
   onGuardar,
 }) => {
-  const [codigo, setCodigo] = useState("");
-  const [titulo, setTitulo] = useState("");
-  const [descripcion, setDescripcion] = useState("");
-  const [tipo, setTipo] = useState<TipoFormato>("AUTO_ADMISORIO");
-  const [plantilla, setPlantilla] = useState("");
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  const {
+    codigo,
+    setCodigo,
+    titulo,
+    setTitulo,
+    descripcion,
+    setDescripcion,
+    tipo,
+    setTipo,
+    plantilla,
+    setPlantilla,
+    archivoCargado,
+    isExtracting,
+    errorArchivo,
+    isSubmitting,
+    tabVisualizacion,
+    setTabVisualizacion,
+    procesarArchivo,
+    insertarVariable,
+    limpiarFormato,
+    submit,
+  } = useEditorFormato({ formatoInicial: formato, onGuardar });
 
-  useEffect(() => {
-    if (formato) {
-      setCodigo(formato.codigo);
-      setTitulo(formato.titulo);
-      setDescripcion(formato.descripcion);
-      setTipo(formato.tipo);
-      setPlantilla(formato.plantilla);
-    } else {
-      setCodigo("");
-      setTitulo("");
-      setDescripcion("");
-      setTipo("AUTO_ADMISORIO");
-      setPlantilla("");
-    }
-  }, [formato, isOpen]);
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!titulo || !plantilla) return;
-
-    setIsSubmitting(true);
-    await onGuardar({ codigo, titulo, descripcion, tipo, plantilla });
-    setIsSubmitting(false);
+  const handleFormSubmit = async (e: React.FormEvent) => {
+    const ok = await submit(e);
+    if (ok) onClose();
   };
 
   return (
     <Modal
       isOpen={isOpen}
       onClose={onClose}
-      title={formato ? `Editar Formato: ${formato.codigo}` : "Nuevo Formato Maestro"}
-      subtitle="Exclusivo del Jefe de Despacho // Plantilla base inmutable para gestores"
+      title={formato ? `Editar Formato: ${formato.codigo}` : "Generar Formato Oficial"}
+      subtitle="Creación desde cero o carga de archivo con vista previa judicial en vivo"
       maxWidth="xl"
     >
-      <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+      <form onSubmit={handleFormSubmit} className="flex flex-col gap-5">
+        {/* Selector de modo de vista: Dividido / Editor / Vista Previa */}
+        <div className="flex items-center justify-between border-b-2 border-[#0F172A] pb-2 flex-wrap gap-2">
+          <span className="text-xs font-black uppercase text-[#0F2537]">
+            Configuración y Contenido del Formato
+          </span>
+          <div className="flex border border-[#0F172A] bg-white p-0.5 text-[10px] font-bold">
+            {(["split", "editor", "preview"] as const).map((modo) => (
+              <button
+                key={modo}
+                type="button"
+                onClick={() => setTabVisualizacion(modo)}
+                className={`px-3 py-1 uppercase transition-all ${
+                  tabVisualizacion === modo
+                    ? "bg-[#0F2537] text-[#9A7B3E]"
+                    : "text-[#0F172A] hover:bg-neutral-100"
+                }`}
+              >
+                {modo === "split" ? "Lado a Lado" : modo === "editor" ? "Solo Editor" : "Solo Vista Previa"}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        {/* Metadatos del formato */}
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
           <Input
-            label="Código *"
+            label="Código Institucional *"
             value={codigo}
             onChange={(e) => setCodigo(e.target.value.toUpperCase())}
             placeholder="AUT-ADM-01"
@@ -82,55 +106,72 @@ export const CrearEditarFormatoModal: React.FC<CrearEditarFormatoModalProps> = (
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           <div className="flex flex-col gap-1 text-left">
-            <label className="text-xs font-bold uppercase tracking-wider text-black">
+            <label className="text-xs font-bold uppercase tracking-wider text-[#0F172A]">
               Tipo Procesal *
             </label>
             <select
               value={tipo}
               onChange={(e) => setTipo(e.target.value as TipoFormato)}
-              className="w-full px-3 py-2 bg-white text-black font-medium border-2 border-black shadow-[2px_2px_0px_#000] focus:outline-none focus:ring-2 focus:ring-[#FACC15]"
+              className="w-full px-3 py-2 bg-white text-[#0F172A] font-bold border-2 border-[#0F172A] shadow-[2px_2px_0px_#0F172A] focus:outline-none focus:ring-2 focus:ring-[#9A7B3E]"
             >
-              <option value="AUTO_ADMISORIO">Auto Admisorio</option>
-              <option value="MEDIDA_PROVISIONAL">Medida Cautelar Provisional</option>
-              <option value="AUTO_TRASLADO">Auto de Traslado</option>
+              <option value="AUTO_ADMISORIO">Auto Admisorio Ordinario</option>
+              <option value="MEDIDA_PROVISIONAL">Auto Admisorio con Medida Provisional</option>
+              <option value="AUTO_TRASLADO">Auto de Traslado y Requerimiento</option>
               <option value="PROYECTO_SENTENCIA">Proyecto de Sentencia</option>
-              <option value="OTRO">Otro Trámite</option>
+              <option value="OTRO">Otro Formato Judicial</option>
             </select>
           </div>
 
           <Input
-            label="Descripción / Criterio de Uso"
+            label="Criterio de Uso / Descripción"
             value={descripcion}
             onChange={(e) => setDescripcion(e.target.value)}
-            placeholder="Indicado para tutelas de salud urgente..."
+            placeholder="Para tutelas de salud urgente con riesgo vital..."
           />
         </div>
 
-        <div className="flex flex-col gap-1 text-left">
-          <div className="flex items-center justify-between">
-            <label className="text-xs font-bold uppercase tracking-wider text-black">
-              Cuerpo de la Plantilla Judicial *
-            </label>
-            <span className="text-[10px] font-bold text-neutral-600">
-              Variables: {"{{RADICADO}}"}, {"{{ACCIONANTE}}"}, {"{{ACCIONADO}}"}
-            </span>
-          </div>
-          <textarea
-            rows={10}
-            value={plantilla}
-            onChange={(e) => setPlantilla(e.target.value)}
-            placeholder="Redacte la estructura judicial oficial..."
-            className="w-full p-3 bg-white text-black font-mono text-xs border-2 border-black shadow-[2px_2px_0px_#000] focus:outline-none focus:ring-2 focus:ring-[#FACC15]"
-            required
-          />
+        {/* Carga de Archivo (Lee tal cual) */}
+        <CargarArchivoFormato
+          onArchivoSeleccionado={procesarArchivo}
+          archivoCargado={archivoCargado}
+          isExtracting={isExtracting}
+          error={errorArchivo}
+          onLimpiar={limpiarFormato}
+        />
+
+        {/* Panel principal: Editor y Vista Previa */}
+        <div
+          className={`grid gap-4 ${
+            tabVisualizacion === "split"
+              ? "grid-cols-1 lg:grid-cols-2"
+              : "grid-cols-1"
+          }`}
+        >
+          {(tabVisualizacion === "split" || tabVisualizacion === "editor") && (
+            <EditorPlantilla
+              plantilla={plantilla}
+              setPlantilla={setPlantilla}
+              onInsertarVariable={insertarVariable}
+              onLimpiar={limpiarFormato}
+            />
+          )}
+
+          {(tabVisualizacion === "split" || tabVisualizacion === "preview") && (
+            <VistaPreviaJudicial
+              titulo={titulo}
+              codigo={codigo}
+              contenido={plantilla}
+            />
+          )}
         </div>
 
-        <div className="flex items-center justify-end gap-3 pt-3 border-t-2 border-black">
+        {/* Botones de acción */}
+        <div className="flex items-center justify-end gap-3 pt-4 border-t-2 border-[#0F172A]">
           <Button type="button" variant="secondary" onClick={onClose} disabled={isSubmitting}>
             Cancelar
           </Button>
           <Button type="submit" variant="primary" isLoading={isSubmitting}>
-            {formato ? "Guardar Modificaciones" : "Crear Formato Oficial"}
+            {formato ? "Guardar Modificaciones" : "Guardar y Habilitar Formato"}
           </Button>
         </div>
       </form>

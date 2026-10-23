@@ -115,7 +115,16 @@ El diseño base y principal de la aplicación DEBE implementar el **estilo Bruta
   - Tipografía contundente, jerarquía clara y alta legibilidad.
   - Cero degradados artificiales o vidrios difusos (*no glassmorphism*); transmitir formalidad, solidez y contundencia institucional.
 
+---
+
+## 6. Prohibición Absoluta de Ejecución en el Navegador por el Asistente
+
+El asistente de IA NUNCA debe ejecutar herramientas de navegador (`browser_subagent`, clics, navegación automatizada o apertura de navegador).
+- Toda la ejecución y prueba visual en el navegador es potestad **exclusiva del USUARIO**.
+- La verificación de código por parte del asistente debe realizarse estrictamente mediante compilación (`npm run build`), TypeScript y comandos de consola.
+
 > Documentación de referencia:
 > - Arquitectura y código: `docs/reglas-de-trabajo.md`
 > - Sistema de diseño visual: `docs/reglas-de-diseno.md`
+
 

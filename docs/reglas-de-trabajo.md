@@ -93,4 +93,13 @@ No duplicar código, lógica, estilos ni definiciones de tipos en ningún lugar 
 
 ---
 
+## 5. Prohibición Absoluta de Ejecución en el Navegador por el Asistente
+
+El asistente de IA NUNCA debe ejecutar herramientas de navegador (`browser_subagent`, automatizaciones de clics o navegación web interna).
+- La ejecución, pruebas y validaciones visuales en el navegador las realiza **única y exclusivamente el USUARIO**.
+- El asistente debe verificar su código mediante compilación (`npm run build`), pruebas de tipos de TypeScript y comandos de terminal, dejando que el usuario interactúe libremente en su propio navegador.
+
+---
+
 > Para las directrices visuales, componentes y paleta cromática, consulte el documento dedicado: **[docs/reglas-de-diseno.md](./reglas-de-diseno.md)**.
+

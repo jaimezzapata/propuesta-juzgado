@@ -93,18 +93,4 @@ No duplicar código, lógica, estilos ni definiciones de tipos en ningún lugar 
 
 ---
 
-## 5. Sistema de Diseño Visual: Brutalismo con Colores Sobrios
-
-El diseño base y principal de toda la aplicación debe ceñirse al **estilo Brutalista (o Neo-brutalismo)** con una **paleta sobria, elegante y de alto contraste**, adecuada para una plataforma judicial y de alta precisión.
-
-### Paleta cromática oficial:
-- **Negro (`#000000` / `#121212`):** Bordes sólidos marcados, tipografía de máximo contraste, sombras duras y fondos de acento.
-- **Blanco / Blanco hueso (`#FFFFFF` / `#F8F9FA`):** Fondos principales, superficies de lectura de expedientes y contraste limpio.
-- **Amarillo sobrio (`#FFE500` / `#F5C518` / `#FACC15`):** Color de acento primario para botones destacados, llamados a la acción (CTAs), badges de estado urgente, resaltados procesales y focus states.
-
-### Elementos característicos del estilo:
-- **Bordes visibles y definidos:** Todos los contenedores, cards, inputs y botones deben contar con bordes negros sólidos marcados (ej. `border-2 border-black` o `border-neutral-900`).
-- **Sombras duras (Hard Shadows):** Sombras de bloque sin difuminado (*drop-shadows sólidas*, ej. `box-shadow: 3px 3px 0px #000000` o `shadow-[4px_4px_0px_0px_#000]`).
-- **Tipografía contundente:** Jerarquías claras, títulos con peso visual marcado (*bold* / *black*), etiquetas en mayúsculas sostenidas para metadatos y excelente legibilidad para lectura judicial.
-- **Micro-interacciones táctiles:** Efecto *press/active* donde los botones y elementos interactivos se desplazan hacia la sombra al hacer clic (`active:translate-x-[2px] active:translate-y-[2px] active:shadow-none`).
-- **Cero adornos superfluos:** Sin degradados suaves artificiales ni efectos de vidrio borroso (*glassmorphism* difuso); la estética debe proyectar firmeza, claridad, modernidad y seriedad institucional.
+> Para las directrices visuales, componentes y paleta cromática, consulte el documento dedicado: **[docs/reglas-de-diseno.md](./reglas-de-diseno.md)**.

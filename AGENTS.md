@@ -115,3 +115,7 @@ El diseño base y principal de la aplicación DEBE implementar el **estilo Bruta
   - Tipografía contundente, jerarquía clara y alta legibilidad.
   - Cero degradados artificiales o vidrios difusos (*no glassmorphism*); transmitir formalidad, solidez y contundencia institucional.
 
+> Documentación de referencia:
+> - Arquitectura y código: `docs/reglas-de-trabajo.md`
+> - Sistema de diseño visual: `docs/reglas-de-diseno.md`
+

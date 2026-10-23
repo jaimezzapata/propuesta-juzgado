@@ -100,3 +100,18 @@ No duplicar código, lógica, estilos ni definiciones de tipos en ningún lugar 
 - **Tipado Único:** Los contratos de datos, enums y tipos generados por Prisma o TypeScript deben ser la única fuente de verdad. No duplicar interfaces que representen la misma entidad.
 - **Constantes Centralizadas:** Cero valores mágicos en el código (cadenas de texto repetidas, códigos de despacho, estados del proceso, URLs de endpoints); todo debe definirse en archivos de constantes o enums dedicados.
 
+---
+
+## 5. Sistema de Diseño Visual: Brutalismo con Colores Sobrios
+
+El diseño base y principal de la aplicación DEBE implementar el **estilo Brutalista / Neo-brutalismo** con colores sobrios:
+- **Paleta sobria:**
+  - **Negro (`#000000` / `#121212`):** Bordes gruesos sólidos, sombras duras (*hard shadows*), textos de alto contraste.
+  - **Blanco / Hueso (`#FFFFFF` / `#F8F9FA`):** Fondos limpios, tarjetas y paneles de trabajo judicial.
+  - **Amarillo sobrio (`#FFE500` / `#F5C518` / `#FACC15`):** Acento primario, botones de acción destacados, badges de estado y focus states.
+- **Rasgos visuales obligatorios:**
+  - Bordes definidos y oscuros (`border-2 border-black`).
+  - Sombras duras de bloque sin difuminado (ej. `shadow-[3px_3px_0px_#000]`).
+  - Tipografía contundente, jerarquía clara y alta legibilidad.
+  - Cero degradados artificiales o vidrios difusos (*no glassmorphism*); transmitir formalidad, solidez y contundencia institucional.
+

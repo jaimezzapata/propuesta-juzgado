@@ -7,7 +7,7 @@ export interface ModalProps {
   title: string;
   subtitle?: string;
   children: React.ReactNode;
-  maxWidth?: "sm" | "md" | "lg" | "xl";
+  maxWidth?: "sm" | "md" | "lg" | "xl" | "2xl" | "full";
 }
 
 export const Modal: React.FC<ModalProps> = ({
@@ -16,7 +16,7 @@ export const Modal: React.FC<ModalProps> = ({
   title,
   subtitle,
   children,
-  maxWidth = "md",
+  maxWidth = "xl",
 }) => {
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -35,19 +35,21 @@ export const Modal: React.FC<ModalProps> = ({
   if (!isOpen) return null;
 
   const widthStyles = {
-    sm: "max-w-sm",
-    md: "max-w-md",
-    lg: "max-w-lg",
-    xl: "max-w-2xl",
+    sm: "max-w-md",
+    md: "max-w-xl",
+    lg: "max-w-3xl",
+    xl: "max-w-5xl",
+    "2xl": "max-w-7xl",
+    full: "max-w-[96vw]",
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#0F172A]/70 backdrop-blur-[1px]">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 md:p-6 bg-[#0F172A]/75 backdrop-blur-[2px]">
       <div
-        className={`w-full ${widthStyles[maxWidth]} bg-white border-3 border-[#0F172A] shadow-[8px_8px_0px_#0F172A] flex flex-col max-h-[90vh] overflow-hidden`}
+        className={`w-full ${widthStyles[maxWidth]} bg-white border-3 border-[#0F172A] shadow-[10px_10px_0px_#0F172A] flex flex-col max-h-[94vh] overflow-hidden`}
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="flex items-center justify-between p-4 bg-[#0F2537] border-b-2 border-[#0F172A] text-white">
+        <div className="flex items-center justify-between p-4 bg-[#0F2537] border-b-2 border-[#0F172A] text-white flex-shrink-0">
           <div>
             <h2 className="text-base font-black uppercase tracking-wider text-white">
               {title}
@@ -60,13 +62,13 @@ export const Modal: React.FC<ModalProps> = ({
           </div>
           <button
             onClick={onClose}
-            className="p-1 text-white hover:bg-[#9A7B3E] hover:text-white border-2 border-white/50 transition-colors"
+            className="p-1.5 text-white hover:bg-[#9A7B3E] hover:text-white border-2 border-white/50 transition-colors"
             title="Cerrar ventana"
           >
             <X className="w-5 h-5" />
           </button>
         </div>
-        <div className="p-5 overflow-y-auto">{children}</div>
+        <div className="p-4 sm:p-6 overflow-y-auto flex-1">{children}</div>
       </div>
     </div>
   );

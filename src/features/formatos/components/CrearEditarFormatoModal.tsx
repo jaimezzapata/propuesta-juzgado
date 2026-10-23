@@ -57,7 +57,7 @@ export const CrearEditarFormatoModal: React.FC<CrearEditarFormatoModalProps> = (
       onClose={onClose}
       title={formato ? `Editar Formato: ${formato.codigo}` : "Generar Formato Oficial"}
       subtitle="Creación desde cero o carga de archivo con vista previa judicial en vivo"
-      maxWidth="xl"
+      maxWidth="full"
     >
       <form onSubmit={handleFormSubmit} className="flex flex-col gap-5">
         {/* Selector de modo de vista: Dividido / Editor / Vista Previa */}

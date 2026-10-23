@@ -60,11 +60,11 @@ export const EditorPlantilla: React.FC<EditorPlantillaProps> = ({
       </div>
 
       <textarea
-        rows={13}
+        rows={16}
         value={plantilla}
         onChange={(e) => setPlantilla(e.target.value)}
         placeholder="Redacte desde cero la estructura oficial del despacho o cárguela desde un archivo..."
-        className="w-full p-3 bg-white text-[#0F172A] font-mono text-xs border-2 border-[#0F172A] shadow-[2px_2px_0px_#0F172A] focus:outline-none focus:ring-2 focus:ring-[#9A7B3E]"
+        className="w-full p-4 bg-white text-[#0F172A] font-mono text-xs sm:text-sm leading-relaxed border-2 border-[#0F172A] shadow-[2px_2px_0px_#0F172A] focus:outline-none focus:ring-2 focus:ring-[#9A7B3E] min-h-[460px] resize-y"
         required
       />
     </div>

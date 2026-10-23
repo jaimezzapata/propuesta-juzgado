@@ -48,8 +48,8 @@ export const VistaPreviaJudicial: React.FC<VistaPreviaJudicialProps> = ({
       </div>
 
       {/* Hoja judicial simulada (Formato de lectura) */}
-      <div className="p-6 overflow-y-auto max-h-[520px] bg-white text-[#0F172A]">
-        <div className="max-w-2xl mx-auto border-2 border-dashed border-neutral-300 p-8 bg-[#FAFAFA] shadow-sm relative">
+      <div className="p-4 sm:p-6 overflow-y-auto min-h-[460px] max-h-[600px] bg-white text-[#0F172A]">
+        <div className="w-full max-w-3xl mx-auto border-2 border-dashed border-neutral-300 p-6 sm:p-10 bg-[#FAFAFA] shadow-sm relative">
           {/* Membrete Oficial */}
           <div className="text-center pb-5 mb-5 border-b border-neutral-300">
             <div className="w-8 h-8 mx-auto mb-2 text-[#0F2537] flex items-center justify-center">

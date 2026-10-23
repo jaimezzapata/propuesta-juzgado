@@ -42,7 +42,7 @@ export const DiligenciarFormatoModal: React.FC<DiligenciarFormatoModalProps> = (
       onClose={onClose}
       title={`Manipular: ${asignacion.formato.titulo}`}
       subtitle={`Radicado: ${asignacion.radicado} | Formato Base: ${asignacion.formato.codigo}`}
-      maxWidth="xl"
+      maxWidth="full"
     >
       <div className="flex flex-col gap-4">
         {/* Banner de protección de formato maestro */}

@@ -29,21 +29,21 @@ export const Badge: React.FC<BadgeProps> = ({
   };
 
   const variantStyles = {
-    gold: "bg-[#9A7B3E] text-white border-[#0F172A]",
-    yellow: "bg-[#9A7B3E] text-white border-[#0F172A]",
-    navy: "bg-[#0F2537] text-white border-[#0F172A]",
-    granate: "bg-[#6B1D2F] text-white border-[#0F172A]",
-    danger: "bg-[#6B1D2F] text-white border-[#0F172A]",
-    slate: "bg-[#0F172A] text-white border-[#0F172A]",
-    black: "bg-[#0F172A] text-white border-[#0F172A]",
-    white: "bg-white text-[#0F172A] border-[#0F172A]",
-    success: "bg-emerald-700 text-white border-[#0F172A]",
-    neutral: "bg-neutral-200 text-[#0F172A] border-[#0F172A]",
+    gold: "bg-amber-50 text-amber-800 border-amber-200/80",
+    yellow: "bg-amber-50 text-amber-800 border-amber-200/80",
+    navy: "bg-blue-50 text-blue-700 border-blue-200/60",
+    granate: "bg-rose-50 text-rose-700 border-rose-200/70",
+    danger: "bg-rose-50 text-rose-700 border-rose-200/70",
+    slate: "bg-slate-100 text-slate-700 border-slate-200/80",
+    black: "bg-slate-900 text-white border-transparent",
+    white: "bg-white text-slate-700 border-slate-200/80 shadow-2xs",
+    success: "bg-emerald-50 text-emerald-700 border-emerald-200/80",
+    neutral: "bg-slate-100 text-slate-600 border-slate-200/60",
   };
 
   return (
     <span
-      className={`inline-flex items-center font-extrabold uppercase tracking-wider border border-[#0F172A] shadow-[1px_1px_0px_#0F172A] select-none ${sizeStyles[size]} ${variantStyles[variant]} ${className}`}
+      className={`inline-flex items-center font-medium rounded-full border select-none ${sizeStyles[size]} ${variantStyles[variant]} ${className}`}
     >
       {children}
     </span>

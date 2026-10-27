@@ -1,4 +1,12 @@
-import { Rol } from "@/features/equipo/types";
+export type Rol = "JEFE_DESPACHO" | "GESTOR";
+
+export type Permiso =
+  | "RADICAR_EXPEDIENTES"
+  | "ANALIZAR_TUTELAS"
+  | "GENERAR_PROVIDENCIAS"
+  | "APROBAR_PROVIDENCIAS"
+  | "ADMINISTRAR_EQUIPO"
+  | "CONFIGURAR_DESPACHO";
 
 export interface SesionUsuario {
   id: string;
@@ -6,6 +14,8 @@ export interface SesionUsuario {
   email: string;
   cargo: string;
   rol: Rol;
+  documento?: string | null;
+  permisos?: Permiso[];
 }
 
 export interface LoginResult {
@@ -13,3 +23,4 @@ export interface LoginResult {
   error?: string;
   usuario?: SesionUsuario;
 }
+

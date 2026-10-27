@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import { EstiloVisualProvider } from "@/features/estilos/context/EstiloVisualContext";
+import { WidgetAparienciaFlotante } from "@/features/estilos/components/WidgetAparienciaFlotante";
 
 export const metadata: Metadata = {
   title: "Juzgado 4° de Familia | Sistema Judicial y Gestión de Gestores",
@@ -14,7 +16,12 @@ export default function RootLayout({
 }) {
   return (
     <html lang="es">
-      <body className="antialiased bg-[#F8F9FA] min-h-screen">{children}</body>
+      <body className="antialiased min-h-screen">
+        <EstiloVisualProvider>
+          {children}
+          <WidgetAparienciaFlotante />
+        </EstiloVisualProvider>
+      </body>
     </html>
   );
 }

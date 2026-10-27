@@ -1,4 +1,7 @@
-import React, { useEffect } from "react";
+"use client";
+
+import React, { useEffect, useState } from "react";
+import { createPortal } from "react-dom";
 import { X } from "lucide-react";
 
 export interface ModalProps {
@@ -18,6 +21,12 @@ export const Modal: React.FC<ModalProps> = ({
   children,
   maxWidth = "xl",
 }) => {
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape") onClose();
@@ -32,7 +41,9 @@ export const Modal: React.FC<ModalProps> = ({
     };
   }, [isOpen, onClose]);
 
-  if (!isOpen) return null;
+  if (!isOpen || !mounted) return null;
+
+  const isFull = maxWidth === "full";
 
   const widthStyles = {
     sm: "max-w-md",
@@ -40,36 +51,38 @@ export const Modal: React.FC<ModalProps> = ({
     lg: "max-w-3xl",
     xl: "max-w-5xl",
     "2xl": "max-w-7xl",
-    full: "max-w-[96vw]",
+    full: "w-[98vw] max-w-[98vw] h-[96vh] max-h-[96vh]",
   };
 
-  return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 md:p-6 bg-[#0F172A]/75 backdrop-blur-[2px]">
+  return createPortal(
+    <div className={`fixed inset-0 z-50 flex items-center justify-center ${isFull ? "p-1 sm:p-2" : "p-2 sm:p-4 md:p-6"} bg-slate-900/40 backdrop-blur-xs`}>
       <div
-        className={`w-full ${widthStyles[maxWidth]} bg-white border-3 border-[#0F172A] shadow-[10px_10px_0px_#0F172A] flex flex-col max-h-[94vh] overflow-hidden`}
+        className={`w-full ${widthStyles[maxWidth]} bg-white rounded-3xl border border-slate-200/80 shadow-2xl flex flex-col ${isFull ? "h-[96vh]" : "max-h-[92vh]"} overflow-hidden`}
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="flex items-center justify-between p-4 bg-[#0F2537] border-b-2 border-[#0F172A] text-white flex-shrink-0">
+        <div className={`flex items-center justify-between ${isFull ? "px-5 py-3" : "px-6 py-4"} bg-white border-b border-slate-100 flex-shrink-0`}>
           <div>
-            <h2 className="text-base font-black uppercase tracking-wider text-white">
+            <h2 className="text-sm sm:text-base font-semibold text-slate-800 tracking-tight">
               {title}
             </h2>
             {subtitle && (
-              <p className="text-xs font-semibold text-[#9A7B3E] mt-0.5">
+              <p className="text-xs text-slate-500 mt-0.5 font-normal">
                 {subtitle}
               </p>
             )}
           </div>
           <button
             onClick={onClose}
-            className="p-1.5 text-white hover:bg-[#9A7B3E] hover:text-white border-2 border-white/50 transition-colors"
+            className="p-1.5 rounded-xl text-slate-400 hover:text-slate-700 hover:bg-slate-100 transition-colors cursor-pointer"
             title="Cerrar ventana"
           >
-            <X className="w-5 h-5" />
+            <X className="w-4 h-4 sm:w-5 sm:h-5" />
           </button>
         </div>
-        <div className="p-4 sm:p-6 overflow-y-auto flex-1">{children}</div>
+        <div className={`${isFull ? "p-3 sm:p-4" : "p-5 sm:p-6"} overflow-y-auto flex-1 flex flex-col`}>{children}</div>
       </div>
-    </div>
+    </div>,
+    document.body
   );
 };
+

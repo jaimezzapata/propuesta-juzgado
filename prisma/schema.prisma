@@ -21,77 +21,18 @@ enum Permiso {
   CONFIGURAR_DESPACHO
 }
 
-enum TipoFormato {
-  AUTO_ADMISORIO
-  MEDIDA_PROVISIONAL
-  AUTO_TRASLADO
-  PROYECTO_SENTENCIA
-  OTRO
-}
-
-enum EstadoAsignacion {
-  ASIGNADO
-  EN_PROCESO
-  COMPLETADO
-}
-
 model Usuario {
-  id                     String            @id @default(cuid())
-  nombre                 String
-  documento              String?
-  cargo                  String
-  email                  String            @unique
-  password               String            @default("123456")
-  rol                    Rol               @default(GESTOR)
-  activo                 Boolean           @default(true)
-  permisos               Permiso[]
-  fechaCreacion          DateTime          @default(now())
-  fechaActualizacion     DateTime          @updatedAt
-
-  formatosCreados        FormatoMaestro[]  @relation("FormatosCreador")
-  asignacionesComoGestor FormatoAsignado[] @relation("GestorAsignado")
-  asignacionesHechas     FormatoAsignado[] @relation("JefeAsignador")
+  id                 String    @id @default(cuid())
+  nombre             String
+  documento          String?
+  cargo              String
+  email              String    @unique
+  password           String    @default("123456")
+  rol                Rol       @default(GESTOR)
+  activo             Boolean   @default(true)
+  permisos           Permiso[]
+  fechaCreacion      DateTime  @default(now())
+  fechaActualizacion DateTime  @updatedAt
 
   @@map("usuarios")
-}
-
-model FormatoMaestro {
-  id                 String            @id @default(cuid())
-  codigo             String            @unique
-  titulo             String
-  descripcion        String
-  tipo               TipoFormato       @default(AUTO_ADMISORIO)
-  plantilla          String            @db.Text
-  activo             Boolean           @default(true)
-  creadoPorId        String
-  creadoPor          Usuario           @relation("FormatosCreador", fields: [creadoPorId], references: [id])
-  asignaciones       FormatoAsignado[]
-  fechaCreacion      DateTime          @default(now())
-  fechaActualizacion DateTime          @updatedAt
-
-  @@map("formatos_maestros")
-}
-
-model FormatoAsignado {
-  id                    String           @id @default(cuid())
-  radicado              String
-  accionante            String?
-  accionado             String?
-  instruccionesJefe     String?          @db.Text
-  contenidoDiligenciado String?          @db.Text
-  estado                EstadoAsignacion @default(ASIGNADO)
-  
-  formatoId             String
-  formato               FormatoMaestro   @relation(fields: [formatoId], references: [id], onDelete: Cascade)
-  
-  gestorId              String
-  gestor                Usuario          @relation("GestorAsignado", fields: [gestorId], references: [id], onDelete: Cascade)
-  
-  asignadoPorId         String
-  asignadoPor           Usuario          @relation("JefeAsignador", fields: [asignadoPorId], references: [id])
-  
-  fechaAsignacion       DateTime         @default(now())
-  fechaActualizacion    DateTime         @updatedAt
-
-  @@map("formatos_asignados")
 }

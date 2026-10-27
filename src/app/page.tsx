@@ -1,12 +1,10 @@
 "use client";
 
-import React, { useState } from "react";
+import React from "react";
 import { useAuth } from "@/features/auth/hooks/useAuth";
 import { LoginView } from "@/features/auth/components/LoginView";
+import { PerfilAutenticadoView } from "@/features/auth/components/PerfilAutenticadoView";
 import { TopBar } from "@/components/ui/TopBar";
-import { FormatosJefeView } from "@/features/formatos/components/FormatosJefeView";
-import { EquipoView } from "@/features/equipo/components/EquipoView";
-import { BandejaGestorView } from "@/features/formatos/components/BandejaGestorView";
 
 export default function Home() {
   const {
@@ -19,13 +17,11 @@ export default function Home() {
     cerrarSesion,
   } = useAuth();
 
-  const [seccionJefe, setSeccionJefe] = useState<"formatos" | "equipo">("formatos");
-
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-[#F8F9FA] flex flex-col items-center justify-center gap-3">
-        <div className="w-10 h-10 border-4 border-black border-t-[#FACC15] animate-spin" />
-        <span className="text-xs font-black uppercase text-black">
+      <div className="min-h-screen flex flex-col items-center justify-center gap-3">
+        <div className="w-10 h-10 border-4 border-slate-300 border-t-[#9A7B3E] rounded-full animate-spin" />
+        <span className="text-xs font-bold text-current opacity-80">
           Iniciando sistema del Despacho Judicial...
         </span>
       </div>
@@ -44,54 +40,12 @@ export default function Home() {
     );
   }
 
-  const esJefe = usuario.rol === "JEFE_DESPACHO";
-
   return (
-    <div className="min-h-screen bg-[#F8F9FA] text-black">
+    <div className="min-h-screen">
       <TopBar usuario={usuario} onLogout={cerrarSesion} />
 
-      <main className="max-w-6xl mx-auto px-4 pb-12">
-        {esJefe ? (
-          <div className="flex flex-col gap-6">
-            {/* Pestañas de control del Jefe */}
-            <div className="flex border-b-2 border-[#0F172A] gap-2">
-              <button
-                type="button"
-                onClick={() => setSeccionJefe("formatos")}
-                className={`px-5 py-2.5 font-black uppercase text-xs border-2 border-b-0 border-[#0F172A] transition-all ${
-                  seccionJefe === "formatos"
-                    ? "bg-[#0F2537] text-[#9A7B3E] shadow-[3px_-2px_0px_#0F172A]"
-                    : "bg-white text-neutral-600 hover:bg-neutral-100"
-                }`}
-              >
-                1. Formatos y Asignaciones del Despacho
-              </button>
-              <button
-                type="button"
-                onClick={() => setSeccionJefe("equipo")}
-                className={`px-5 py-2.5 font-black uppercase text-xs border-2 border-b-0 border-[#0F172A] transition-all ${
-                  seccionJefe === "equipo"
-                    ? "bg-[#0F2537] text-[#9A7B3E] shadow-[3px_-2px_0px_#0F172A]"
-                    : "bg-white text-neutral-600 hover:bg-neutral-100"
-                }`}
-              >
-                2. Perfiles de Gestores
-              </button>
-            </div>
-
-            {seccionJefe === "formatos" ? (
-              <FormatosJefeView jefeId={usuario.id} />
-            ) : (
-              <EquipoView />
-            )}
-          </div>
-        ) : (
-          /* Vista del Gestor: Solo bandeja de casos asignados */
-          <BandejaGestorView
-            gestorId={usuario.id}
-            nombreGestor={usuario.nombre}
-          />
-        )}
+      <main className="max-w-6xl mx-auto px-4 pb-12 pt-2">
+        <PerfilAutenticadoView usuario={usuario} onLogout={cerrarSesion} />
       </main>
     </div>
   );

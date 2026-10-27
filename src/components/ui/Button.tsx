@@ -16,20 +16,20 @@ export const Button: React.FC<ButtonProps> = ({
   ...props
 }) => {
   const baseStyles =
-    "inline-flex items-center justify-center font-bold tracking-wide uppercase transition-all select-none border-2 border-[#0F172A] disabled:opacity-50 disabled:pointer-events-none";
+    "inline-flex items-center justify-center font-medium rounded-xl transition-all duration-150 select-none disabled:opacity-50 disabled:pointer-events-none cursor-pointer";
 
   const sizeStyles = {
-    sm: "px-3 py-1.5 text-xs shadow-[2px_2px_0px_#0F172A] active:translate-x-[1px] active:translate-y-[1px] active:shadow-none",
-    md: "px-4 py-2 text-sm shadow-[3px_3px_0px_#0F172A] active:translate-x-[2px] active:translate-y-[2px] active:shadow-none",
-    lg: "px-6 py-3 text-base shadow-[4px_4px_0px_#0F172A] active:translate-x-[2px] active:translate-y-[2px] active:shadow-none",
+    sm: "px-3 py-1.5 text-xs shadow-2xs hover:shadow-xs",
+    md: "px-4 py-2 text-xs sm:text-sm shadow-2xs hover:shadow-xs",
+    lg: "px-5 py-2.5 text-sm sm:text-base shadow-xs hover:shadow-sm",
   };
 
   const variantStyles = {
-    primary: "bg-[#9A7B3E] hover:bg-[#866933] text-white",
-    secondary: "bg-white hover:bg-neutral-100 text-[#0F172A]",
-    danger: "bg-[#6B1D2F] hover:bg-[#541624] text-white",
-    judicial: "bg-[#0F2537] hover:bg-[#183952] text-white",
-    ghost: "bg-transparent hover:bg-neutral-200 text-[#0F172A] border-transparent shadow-none active:translate-x-0 active:translate-y-0",
+    primary: "bg-blue-600 hover:bg-blue-700 text-white shadow-2xs",
+    secondary: "bg-white hover:bg-slate-50 text-slate-700 border border-slate-200/80 hover:border-slate-300 shadow-2xs",
+    danger: "bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200/80",
+    judicial: "bg-slate-900 hover:bg-slate-800 text-white shadow-2xs",
+    ghost: "bg-transparent hover:bg-slate-100/80 text-slate-600 shadow-none",
   };
 
   return (

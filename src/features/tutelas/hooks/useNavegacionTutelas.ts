@@ -51,7 +51,13 @@ export function useNavegacionTutelas(esJefe: boolean) {
 
   const cambiarSeccion = useCallback(
     (nuevaSeccion: SeccionPrincipalTutela) => {
-      if (nuevaSeccion === "formatos_jefe" && !esJefe) return;
+      if (
+        (nuevaSeccion === "formatos_jefe" ||
+          nuevaSeccion === "analitica_jefe") &&
+        !esJefe
+      ) {
+        return;
+      }
       setSeccionActiva(nuevaSeccion);
     },
     [esJefe]

@@ -17,6 +17,7 @@ import { VistaPasoSeleccionFormato } from "./VistaPasoSeleccionFormato";
 import { VistaPasoSeleccionCliente } from "./VistaPasoSeleccionCliente";
 import { VistaPasoEstudioDiligenciamiento } from "./VistaPasoEstudioDiligenciamiento";
 import { FlujoGestionFormatosJefeView } from "./FlujoGestionFormatosJefeView";
+import { PanelAnaliticaDespachoView } from "./PanelAnaliticaDespachoView";
 import { PopoverVincularSeleccion } from "./PopoverVincularSeleccion";
 import { ModalConfiguracionIA } from "./ModalConfiguracionIA";
 import { ModalNuevoClienteTutela } from "./ModalNuevoClienteTutela";
@@ -30,7 +31,7 @@ export const TutelasLandingView: React.FC<TutelasLandingViewProps> = ({
   usuario,
 }) => {
   const {
-    apiKey,
+    clavesIA,
     proveedorForzado,
     proveedorEfectivo,
     nombreProveedorActivo,
@@ -54,6 +55,7 @@ export const TutelasLandingView: React.FC<TutelasLandingViewProps> = ({
     cerrarModalCrearDoc,
     guardarFormatoActual,
     crearNuevoDocumentoYGuardar,
+    eliminarFormato,
   } = usePlantillasTutela(usuario);
 
   const {
@@ -78,7 +80,15 @@ export const TutelasLandingView: React.FC<TutelasLandingViewProps> = ({
     crearNuevoCaso,
     guardandoNuevo,
     errorNuevo,
-  } = useCasosTutela();
+    actualizarEstadoYGestor,
+    metricasGlobales,
+    metricasPorGestor,
+    filtroGestor,
+    setFiltroGestor,
+    filtroEstado,
+    setFiltroEstado,
+    casosFiltradosAnalitica,
+  } = useCasosTutela(usuario.rol);
 
   const {
     nombreArchivo,
@@ -111,29 +121,45 @@ export const TutelasLandingView: React.FC<TutelasLandingViewProps> = ({
     usuario,
     plantillaActiva,
     casoSeleccionado,
-    apiKey,
+    clavesIA,
     proveedorEfectivo
   );
 
-  const handleGuardarFormatoParaGestores = async () => {
+  const handleGuardarFormatoParaGestores = async (metadatos: {
+    codigo: string;
+    titulo: string;
+    descripcion: string;
+  }) => {
     if (!bufferParaGuardarPlantilla) return;
     const res = await guardarFormatoActual(
       bufferParaGuardarPlantilla,
       vinculos,
       nombreArchivo,
-      esArchivoRecienSubido
-        ? {
-            id: `plantilla-${Date.now()}`,
-            codigo: `F-TUT-0${plantillas.length + 1}`,
-            titulo: nombreArchivo.replace(/\.docx$/i, "").replace(/_/g, " "),
-          }
-        : undefined
+      {
+        id: esArchivoRecienSubido
+          ? `plantilla-${Date.now()}`
+          : plantillaActiva?.id,
+        codigo: metadatos.codigo,
+        titulo: metadatos.titulo,
+        descripcion: metadatos.descripcion,
+      }
     );
     if (res.ok) {
       marcarArchivoComoGuardado();
       cambiarSeccion("diligenciar");
       setPasoDiligenciar(1);
     }
+    setMensajeEstado(res.mensaje);
+  };
+
+  const handleEditarFormatoExistente = (idPlantilla: string) => {
+    seleccionarPlantilla(idPlantilla);
+    cambiarSeccion("formatos_jefe");
+    setPasoFormatosJefe(2);
+  };
+
+  const handleEliminarFormatoExistente = async (idPlantilla: string) => {
+    const res = await eliminarFormato(idPlantilla);
     setMensajeEstado(res.mensaje);
   };
 
@@ -177,12 +203,19 @@ export const TutelasLandingView: React.FC<TutelasLandingViewProps> = ({
 
           {pasoDiligenciar === 1 && (
             <VistaPasoSeleccionFormato
+              esJefe={esJefe}
               plantillas={plantillas}
               plantillaActivaId={plantillaActivaId}
               cargando={cargandoPlantillas}
               onElegirYContinuar={(id) => {
                 seleccionarPlantilla(id);
                 irADiligenciarConFormato();
+              }}
+              onEditarFormatoJefe={handleEditarFormatoExistente}
+              onEliminarFormatoJefe={handleEliminarFormatoExistente}
+              onIrACrearFormatoJefe={() => {
+                cambiarSeccion("formatos_jefe");
+                setPasoFormatosJefe(1);
               }}
             />
           )}
@@ -233,7 +266,9 @@ export const TutelasLandingView: React.FC<TutelasLandingViewProps> = ({
         <FlujoGestionFormatosJefeView
           pasoActual={pasoFormatosJefe}
           plantillas={plantillas}
+          plantillaActiva={plantillaActiva}
           plantillaActivaId={plantillaActivaId}
+          esArchivoRecienSubido={esArchivoRecienSubido}
           nombreArchivo={nombreArchivo}
           bufferDocx={bufferDocxActualizado}
           vinculos={textosResaltadosActivos}
@@ -245,6 +280,11 @@ export const TutelasLandingView: React.FC<TutelasLandingViewProps> = ({
           onSubirArchivo={subirArchivoDocx}
           onAbrirModalCrearDoc={abrirModalCrearDoc}
           onSeleccionarPlantillaExistente={seleccionarPlantilla}
+          onUsarFormatoParaDiligenciar={(id) => {
+            seleccionarPlantilla(id);
+            irADiligenciarConFormato();
+          }}
+          onEliminarFormato={handleEliminarFormatoExistente}
           onDetectarConIA={ejecutarDeteccionIA}
           onToggleEdicionManual={toggleModoEdicionManual}
           onCambiarValorGlobal={actualizarValorVariableGlobal}
@@ -273,6 +313,27 @@ export const TutelasLandingView: React.FC<TutelasLandingViewProps> = ({
         />
       )}
 
+      {/* SECCIÓN 4: PANEL DE ANALÍTICA Y CONTROL DE GESTORES (Exclusivo Jefe) */}
+      {seccionActiva === "analitica_jefe" && esJefe && (
+        <PanelAnaliticaDespachoView
+          metricasGlobales={metricasGlobales}
+          metricasPorGestor={metricasPorGestor}
+          casosFiltrados={casosFiltradosAnalitica}
+          filtroGestor={filtroGestor}
+          filtroEstado={filtroEstado}
+          onCambiarFiltroGestor={setFiltroGestor}
+          onCambiarFiltroEstado={setFiltroEstado}
+          onActualizarEstadoYGestor={async (idCaso, estado, gestor) => {
+            const res = await actualizarEstadoYGestor(idCaso, estado, gestor);
+            setMensajeEstado(res.mensaje);
+          }}
+          onIrADiligenciarCaso={(idCaso) => {
+            seleccionarCaso(idCaso);
+            irADiligenciarConCliente();
+          }}
+        />
+      )}
+
       {/* Popover flotante de selección de palabras (solo Jefe) */}
       {esJefe && (
         <PopoverVincularSeleccion
@@ -292,13 +353,15 @@ export const TutelasLandingView: React.FC<TutelasLandingViewProps> = ({
         onCrearDocumento={async (input) => {
           const res = await crearNuevoDocumentoYGuardar(input);
           setMensajeEstado(res.mensaje);
-          if (res.ok) setPasoFormatosJefe(2);
+          if (res.ok) {
+            setPasoFormatosJefe(2);
+          }
         }}
       />
 
       <ModalConfiguracionIA
         abierto={modalIAAbierto}
-        apiKeyActual={apiKey}
+        clavesActuales={clavesIA}
         proveedorForzadoActual={proveedorForzado}
         onCerrar={cerrarModalIA}
         onGuardar={guardarConfiguracionIA}

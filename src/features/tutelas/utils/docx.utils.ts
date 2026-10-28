@@ -265,10 +265,9 @@ export function resolverValorActivoVinculo(
   casoSeleccionado: CasoTutelaDTO | null,
   usuario: SesionUsuario
 ): string {
-  if (
-    vinculo.valorPersonalizado !== undefined &&
-    vinculo.valorPersonalizado.trim().length > 0
-  ) {
+  // Si el usuario editó manualmente el campo (incluso si lo vació temporalmente a "" para escribir otro valor),
+  // respetamos exactamente lo que tiene en el input sin reiniciar ni sobrescribir con la BD o el texto original.
+  if (vinculo.valorPersonalizado !== undefined) {
     return vinculo.valorPersonalizado;
   }
 
@@ -310,7 +309,7 @@ export function generarDocxConReemplazos(
       casoSeleccionado,
       usuario
     );
-    if (valorActivo && valorActivo.trim() && v.textoOriginal !== valorActivo) {
+    if (v.textoOriginal !== valorActivo) {
       listaReemplazos.push({
         buscar: v.textoOriginal,
         nuevo: valorActivo,

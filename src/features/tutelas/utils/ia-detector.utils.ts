@@ -1,4 +1,4 @@
-import { CampoBaseDatosId, ProveedorIA } from "../types";
+import { CampoBaseDatosId, MapaClavesIA, ProveedorIA } from "../types";
 
 /**
  * Detecta automáticamente el proveedor de IA a partir del formato de la API Key ingresada.
@@ -13,11 +13,13 @@ export function detectarProveedorPorApiKey(apiKey: string): ProveedorIA {
   if (limpia.startsWith("sk-ant-")) {
     return "claude";
   }
+  if (limpia.startsWith("gsk_")) {
+    return "groq";
+  }
   if (limpia.startsWith("sk-")) {
     return "openai";
   }
 
-  // Si ingresa cualquier otra llave, intentamos OpenAI/compatible o Gemini según longitud
   return limpia.length > 45 ? "openai" : "gemini";
 }
 
@@ -29,10 +31,73 @@ export function obtenerNombreProveedorIA(proveedor: ProveedorIA): string {
       return "Anthropic Claude";
     case "openai":
       return "OpenAI ChatGPT";
+    case "groq":
+      return "Groq Cloud (Llama 3.3)";
     case "local":
     default:
       return "Motor Semántico Jurídico Local";
   }
+}
+
+/**
+ * Construye la cola ordenada de intentos (Proveedor + API Key) para que, si falla
+ * la primera IA (ej. Gemini), el sistema salte automáticamente a la siguiente IA
+ * (Claude -> OpenAI -> Groq) sin detener la tarea hasta lograr el resultado.
+ */
+export function construirColaConmutacionIA(
+  claves: MapaClavesIA,
+  proveedorInicialPreferido?: ProveedorIA
+): Array<{ proveedor: Exclude<ProveedorIA, "local">; apiKey: string }> {
+  const cola: Array<{
+    proveedor: Exclude<ProveedorIA, "local">;
+    apiKey: string;
+  }> = [];
+  const agregados = new Set<string>();
+
+  const agregarCandidato = (
+    proveedor: Exclude<ProveedorIA, "local">,
+    key?: string
+  ) => {
+    const k = key?.trim();
+    if (!k) return;
+    const firma = `${proveedor}:${k}`;
+    if (agregados.has(firma)) return;
+    agregados.add(firma);
+    cola.push({ proveedor, apiKey: k });
+  };
+
+  // 1. Si hay un proveedor preferido explícito, ponerlo de primero
+  const keyPrincipal = claves.principal?.trim();
+  const provDetectadoPrincipal = keyPrincipal
+    ? detectarProveedorPorApiKey(keyPrincipal)
+    : "local";
+
+  if (
+    proveedorInicialPreferido &&
+    proveedorInicialPreferido !== "local"
+  ) {
+    const keyEspecifica = claves[proveedorInicialPreferido] || keyPrincipal;
+    agregarCandidato(proveedorInicialPreferido, keyEspecifica);
+  } else if (keyPrincipal && provDetectadoPrincipal !== "local") {
+    agregarCandidato(provDetectadoPrincipal, keyPrincipal);
+  }
+
+  // 2. Agregar todas las demás llaves configuradas en orden de conmutación (Gemini -> Claude -> OpenAI -> Groq)
+  agregarCandidato("gemini", claves.gemini);
+  agregarCandidato("claude", claves.claude);
+  agregarCandidato("openai", claves.openai);
+  agregarCandidato("groq", claves.groq);
+
+  // 3. Si el usuario ingresó una llave principal genérica y falló en su proveedor detectado,
+  // ensayar esa misma llave contra los demás proveedores compatibles antes de rendirse
+  if (keyPrincipal) {
+    agregarCandidato("gemini", keyPrincipal);
+    agregarCandidato("openai", keyPrincipal);
+    agregarCandidato("claude", keyPrincipal);
+    agregarCandidato("groq", keyPrincipal);
+  }
+
+  return cola;
 }
 
 /**

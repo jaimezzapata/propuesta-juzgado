@@ -30,7 +30,7 @@ interface VistaPasoEstudioDiligenciamientoProps {
   onVolverAPasoFormato: () => void;
   onVolverAPasoCliente: () => void;
   onDesvincularCliente: () => void;
-  onCambiarValorGlobal: (id: string, nuevoValor: string) => void;
+  onCambiarValorGlobal: (id: string, nuevoValor: string | undefined) => void;
   onEliminarVinculo: (id: string) => void;
   onRestaurarEdicionesManuales: () => void;
   onSeleccionarTextoMouse: (

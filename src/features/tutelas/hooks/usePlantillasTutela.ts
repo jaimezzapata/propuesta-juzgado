@@ -8,6 +8,7 @@ import {
 } from "../types";
 import { SesionUsuario } from "@/features/auth/types";
 import {
+  eliminarPlantillaTutelaAction,
   guardarPlantillaTutelaAction,
   listarPlantillasTutelaAction,
 } from "../actions/plantillas-tutela.actions";
@@ -193,6 +194,45 @@ export function usePlantillasTutela(usuario: SesionUsuario) {
     [esJefe, usuario.nombre, usuario.rol]
   );
 
+  const eliminarFormato = useCallback(
+    async (
+      idPlantilla: string
+    ): Promise<{ ok: boolean; mensaje: string }> => {
+      if (!esJefe) {
+        return {
+          ok: false,
+          mensaje: "Solo el Jefe de Despacho puede eliminar formatos.",
+        };
+      }
+
+      const encontrada = plantillas.find((p) => p.id === idPlantilla);
+      const res = await eliminarPlantillaTutelaAction(idPlantilla, usuario.rol);
+
+      if (res.success) {
+        setPlantillas((prev) => {
+          const restantes = prev.filter((p) => p.id !== idPlantilla);
+          if (plantillaActivaId === idPlantilla) {
+            setPlantillaActivaId(restantes[0]?.id || null);
+          }
+          return restantes;
+        });
+
+        return {
+          ok: true,
+          mensaje: `Formato "${
+            encontrada?.titulo || idPlantilla
+          }" eliminado del catálogo del Despacho.`,
+        };
+      }
+
+      return {
+        ok: false,
+        mensaje: res.error || "No se pudo eliminar el formato.",
+      };
+    },
+    [esJefe, plantillas, plantillaActivaId, usuario.rol]
+  );
+
   return {
     esJefe,
     plantillas,
@@ -206,6 +246,7 @@ export function usePlantillasTutela(usuario: SesionUsuario) {
     cerrarModalCrearDoc: () => setModalCrearDocAbierto(false),
     guardarFormatoActual,
     crearNuevoDocumentoYGuardar,
+    eliminarFormato,
   };
 }
 

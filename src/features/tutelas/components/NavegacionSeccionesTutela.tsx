@@ -1,7 +1,13 @@
 "use client";
 
 import React from "react";
-import { FileCheck2, FolderCog, Users, KeyRound } from "lucide-react";
+import {
+  FileCheck2,
+  FolderCog,
+  Users,
+  KeyRound,
+  BarChart3,
+} from "lucide-react";
 import { SeccionPrincipalTutela } from "../types";
 import { useEstiloVisual } from "@/features/estilos/hooks/useEstiloVisual";
 import { obtenerClasesTemaTutelas } from "../utils/estilos-tema.utils";
@@ -73,6 +79,19 @@ export const NavegacionSeccionesTutela: React.FC<
           <Users className="w-3.5 h-3.5 text-[#D4AF37]" />
           <span>Directorio de Clientes / Casos</span>
         </button>
+
+        {esJefe && (
+          <button
+            type="button"
+            onClick={() => onCambiarSeccion("analitica_jefe")}
+            className={`h-8 px-3.5 text-xs font-black flex items-center gap-2 cursor-pointer transition-all ${getTabClasses(
+              seccionActiva === "analitica_jefe"
+            )}`}
+          >
+            <BarChart3 className="w-3.5 h-3.5 text-[#D4AF37]" />
+            <span>Panel de Analítica y Gestores</span>
+          </button>
+        )}
       </div>
 
       {/* Botón de conexión IA (para Jefe de Despacho) */}

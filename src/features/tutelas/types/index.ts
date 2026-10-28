@@ -3,7 +3,24 @@ export type ModuloSistemaId = "tutelas" | "dashboard";
 export type SeccionPrincipalTutela =
   | "diligenciar"
   | "formatos_jefe"
-  | "clientes_bd";
+  | "clientes_bd"
+  | "analitica_jefe";
+
+export type EstadoCasoTutela =
+  | "PENDIENTE"
+  | "RESUELTO"
+  | "DEVUELTO"
+  | "PERDIDO";
+
+export const ESTADOS_CASO_TUTELA: Array<{
+  id: EstadoCasoTutela;
+  etiqueta: string;
+}> = [
+  { id: "PENDIENTE", etiqueta: "Pendiente / En Trámite" },
+  { id: "RESUELTO", etiqueta: "Resuelto / Fallado" },
+  { id: "DEVUELTO", etiqueta: "Devuelto / En Corrección" },
+  { id: "PERDIDO", etiqueta: "Perdido / Vencido" },
+];
 
 export type PasoFlujo = 1 | 2 | 3;
 
@@ -13,7 +30,22 @@ export interface DefinicionPasoFlujo {
   subtitulo: string;
 }
 
-export type ProveedorIA = "gemini" | "claude" | "openai" | "local";
+export type ProveedorIA = "gemini" | "claude" | "openai" | "groq" | "local";
+
+export interface MapaClavesIA {
+  principal?: string;
+  gemini?: string;
+  claude?: string;
+  openai?: string;
+  groq?: string;
+}
+
+export interface IntentoEjecucionIA {
+  proveedor: ProveedorIA;
+  modelo: string;
+  exito: boolean;
+  motivo?: string;
+}
 
 export type CampoBaseDatosId =
   | "radicado"
@@ -131,6 +163,10 @@ export interface CasoTutelaDTO {
   derechoInvocado: string;
   hechosResumen: string;
   fechaRadicacion: string;
+  estado: EstadoCasoTutela;
+  gestorAsignadoNombre: string;
+  gestorAsignadoCargo: string;
+  diasTerminoRestantes: number;
 }
 
 export interface NuevoCasoTutelaInput {
@@ -145,6 +181,33 @@ export interface NuevoCasoTutelaInput {
   derechoInvocado: string;
   hechosResumen: string;
   fechaRadicacion: string;
+  estado?: EstadoCasoTutela;
+  gestorAsignadoNombre?: string;
+}
+
+export interface MetricasGlobalesDespacho {
+  totalCasos: number;
+  pendientes: number;
+  resueltos: number;
+  devueltos: number;
+  perdidos: number;
+  porcentajeResueltos: number;
+  porcentajePendientes: number;
+  porcentajeDevueltos: number;
+  porcentajePerdidos: number;
+  tasaEfectividadGlobal: number;
+}
+
+export interface MetricaRendimientoGestor {
+  nombreGestor: string;
+  cargoGestor: string;
+  totalAsignados: number;
+  pendientes: number;
+  resueltos: number;
+  devueltos: number;
+  perdidos: number;
+  tasaEfectividad: number;
+  diasPromedioRestantes: number;
 }
 
 /**
@@ -178,6 +241,8 @@ export interface ItemVinculoVisual {
 export interface ResultadoDeteccionIA {
   success: boolean;
   proveedorUsado: ProveedorIA;
+  modeloUsado?: string;
+  intentosRealizados?: IntentoEjecucionIA[];
   vinculosDetectados: Array<{
     textoOriginal: string;
     campoBD: CampoBaseDatosId;

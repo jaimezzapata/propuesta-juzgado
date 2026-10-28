@@ -4,6 +4,9 @@ import React from "react";
 import { SesionUsuario } from "../types";
 import { LoginPanelLateral } from "./LoginPanelLateral";
 import { LoginFormCard } from "./LoginFormCard";
+import { BotonCambiarFondoLogin } from "./BotonCambiarFondoLogin";
+import { useFondoLogin } from "../hooks/useFondoLogin";
+import { FONDOS_JUDICIALES_LOGIN } from "../utils/fondos-login.utils";
 import { useEstiloVisual } from "@/features/estilos/hooks/useEstiloVisual";
 
 interface LoginViewProps {
@@ -13,6 +16,9 @@ interface LoginViewProps {
   error: string | null;
 }
 
+const MASCARA_DEGRADADO_FONDO =
+  "linear-gradient(to right, rgba(0,0,0,1) 0%, rgba(0,0,0,0.85) 30%, rgba(0,0,0,0.3) 60%, rgba(0,0,0,0) 85%)";
+
 export const LoginView: React.FC<LoginViewProps> = ({
   perfiles,
   onLogin,
@@ -20,6 +26,8 @@ export const LoginView: React.FC<LoginViewProps> = ({
   error,
 }) => {
   const { estilo, modo } = useEstiloVisual();
+  const { fondoActual, indiceActivo, totalFondos, cambiarSiguienteFondo } =
+    useFondoLogin();
   const esOscuro = modo === "oscuro";
 
   // Color base hacia el cual se desvanece el degradado en el lado derecho
@@ -58,17 +66,20 @@ export const LoginView: React.FC<LoginViewProps> = ({
     <div
       className={`relative min-h-screen w-full flex items-center justify-center p-4 sm:p-8 overflow-hidden transition-colors duration-300 ${getBaseColorClass()}`}
     >
-      {/* Imagen con máscara de degradado: visible al 100% en el lado izquierdo y desvaneciéndose hacia la derecha */}
-      <div
-        className="absolute inset-0 bg-cover bg-center sm:bg-left bg-no-repeat pointer-events-none transition-all duration-700"
-        style={{
-          backgroundImage: `url('/images/judicial-bg.jpg')`,
-          maskImage:
-            "linear-gradient(to right, rgba(0,0,0,1) 0%, rgba(0,0,0,0.85) 30%, rgba(0,0,0,0.3) 60%, rgba(0,0,0,0) 85%)",
-          WebkitMaskImage:
-            "linear-gradient(to right, rgba(0,0,0,1) 0%, rgba(0,0,0,0.85) 30%, rgba(0,0,0,0.3) 60%, rgba(0,0,0,0) 85%)",
-        }}
-      />
+      {/* Capas de imagen fijas con transición exclusiva de opacidad (evita cualquier deformación o expansión al cambiar de foto) */}
+      {FONDOS_JUDICIALES_LOGIN.map((fondo, idx) => (
+        <div
+          key={fondo.id}
+          className={`absolute inset-0 bg-cover bg-center bg-no-repeat pointer-events-none transition-opacity duration-500 ease-out ${
+            idx === indiceActivo ? "opacity-100" : "opacity-0"
+          }`}
+          style={{
+            backgroundImage: `url('${fondo.url}')`,
+            maskImage: MASCARA_DEGRADADO_FONDO,
+            WebkitMaskImage: MASCARA_DEGRADADO_FONDO,
+          }}
+        />
+      ))}
 
       {/* Capa de degradado complementaria que asegura una transición limpia y sin cortes hacia el fondo derecho */}
       <div
@@ -85,6 +96,14 @@ export const LoginView: React.FC<LoginViewProps> = ({
           error={error}
         />
       </div>
+
+      {/* Botón muy sutil en la esquina inferior izquierda para alternar la fotografía de fondo */}
+      <BotonCambiarFondoLogin
+        tituloFondo={fondoActual.titulo}
+        indiceActual={indiceActivo}
+        totalFondos={totalFondos}
+        onCambiarFondo={cambiarSiguienteFondo}
+      />
     </div>
   );
 };

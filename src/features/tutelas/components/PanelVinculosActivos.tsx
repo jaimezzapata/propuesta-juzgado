@@ -16,7 +16,7 @@ interface PanelVinculosActivosProps {
   esJefe: boolean;
   vinculos: ItemVinculoVisual[];
   edicionesManualesCount: number;
-  onCambiarValorGlobal: (id: string, nuevoValor: string) => void;
+  onCambiarValorGlobal: (id: string, nuevoValor: string | undefined) => void;
   onEliminarVinculo: (id: string) => void;
   onRestaurarEdicionesManuales: () => void;
 }
@@ -98,12 +98,12 @@ export const PanelVinculosActivos: React.FC<PanelVinculosActivosProps> = ({
                     {v.ocurrencias}x
                   </span>
 
-                  {v.fueReemplazado && (
+                  {(v.fueReemplazado || v.valorPersonalizado !== undefined) && (
                     <button
                       type="button"
-                      onClick={() => onCambiarValorGlobal(v.id, "")}
+                      onClick={() => onCambiarValorGlobal(v.id, undefined)}
                       className="p-0.5 opacity-75 hover:opacity-100 hover:text-amber-500 cursor-pointer"
-                      title="Restaurar al texto original"
+                      title="Restaurar al valor automático / original"
                     >
                       <RotateCcw className="w-3 h-3" />
                     </button>
@@ -132,6 +132,7 @@ export const PanelVinculosActivos: React.FC<PanelVinculosActivosProps> = ({
               <input
                 type="text"
                 value={v.textoMostrado}
+                placeholder={`Escriba el nuevo valor (Original: ${v.textoOriginal})`}
                 onChange={(e) => onCambiarValorGlobal(v.id, e.target.value)}
                 className={`w-full h-8 px-2.5 text-xs font-bold outline-none transition-colors ${
                   v.fueReemplazado ? tema.inputReemplazado : tema.input

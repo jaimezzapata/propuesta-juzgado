@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
+  <!-- Fondo Institucional Azul Judicial Profundo con Borde Dorado -->
+  <rect x="2" y="2" width="60" height="60" rx="14" fill="#0F2537" stroke="#D4AF37" stroke-width="3"/>
+  <rect x="6" y="6" width="52" height="52" rx="10" stroke="#9A7B3E" stroke-width="1" stroke-opacity="0.5"/>
+
+  <!-- Pedestal y Columna Central de la Balanza -->
+  <path d="M22 50H42" stroke="#D4AF37" stroke-width="3.5" stroke-linecap="round"/>
+  <path d="M26 46H38" stroke="#9A7B3E" stroke-width="2.5" stroke-linecap="round"/>
+  <path d="M32 15V46" stroke="#D4AF37" stroke-width="3" stroke-linecap="round"/>
+  <circle cx="32" cy="14" r="3" fill="#D4AF37"/>
+
+  <!-- Brazo Horizontal de la Balanza -->
+  <path d="M14 21H50" stroke="#D4AF37" stroke-width="3" stroke-linecap="round"/>
+
+  <!-- Platillo Izquierdo -->
+  <path d="M16 21L11 33H21L16 21Z" stroke="#E5C158" stroke-width="2" stroke-linejoin="round"/>
+  <path d="M10 33C10 36.5 12.7 39 16 39C19.3 39 22 36.5 22 33H10Z" fill="#D4AF37"/>
+
+  <!-- Platillo Derecho -->
+  <path d="M48 21L43 33H53L48 21Z" stroke="#E5C158" stroke-width="2" stroke-linejoin="round"/>
+  <path d="M42 33C42 36.5 44.7 39 48 39C51.3 39 54 36.5 54 33H42Z" fill="#D4AF37"/>
+</svg>

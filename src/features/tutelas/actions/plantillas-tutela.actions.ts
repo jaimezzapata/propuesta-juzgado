@@ -225,3 +225,30 @@ export async function guardarPlantillaTutelaAction(
   }
 }
 
+export async function eliminarPlantillaTutelaAction(
+  idPlantilla: string,
+  rolUsuario: string
+): Promise<{ success: boolean; error?: string }> {
+  if (rolUsuario !== "JEFE_DESPACHO") {
+    return {
+      success: false,
+      error:
+        "Permiso denegado: Únicamente el Jefe de Despacho puede eliminar formatos.",
+    };
+  }
+
+  try {
+    await asegurarTablaPlantillasTutela();
+    await prisma.$executeRawUnsafe(
+      `DELETE FROM "plantillas_tutela" WHERE "id" = $1;`,
+      idPlantilla
+    );
+    return { success: true };
+  } catch (err: any) {
+    return {
+      success: false,
+      error: err?.message || "No se pudo eliminar el formato.",
+    };
+  }
+}
+

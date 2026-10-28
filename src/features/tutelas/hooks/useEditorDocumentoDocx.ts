@@ -6,6 +6,7 @@ import {
   CampoBaseDatosId,
   CasoTutelaDTO,
   ItemVinculoVisual,
+  MapaClavesIA,
   PlantillaDocumentoTutelaDTO,
   ProveedorIA,
   SeleccionTextoActiva,
@@ -26,7 +27,7 @@ export function useEditorDocumentoDocx(
   usuario: SesionUsuario,
   plantillaActiva: PlantillaDocumentoTutelaDTO | null,
   casoSeleccionado: CasoTutelaDTO | null,
-  apiKey: string,
+  clavesIA: MapaClavesIA,
   proveedorEfectivo: ProveedorIA
 ) {
   const esJefe = usuario.rol === "JEFE_DESPACHO";
@@ -71,6 +72,20 @@ export function useEditorDocumentoDocx(
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [plantillaActiva?.id, plantillaActiva?.fechaActualizacion]);
 
+  // Al seleccionar un cliente distinto, permitir que sus datos de BD actualicen los campos vinculados
+  useEffect(() => {
+    if (!casoSeleccionado?.id) return;
+    setVinculos((prev) =>
+      prev.map((v) =>
+        v.campoBD &&
+        v.campoBD !== "funcionarioNombre" &&
+        v.campoBD !== "funcionarioCargo"
+          ? { ...v, valorPersonalizado: undefined }
+          : v
+      )
+    );
+  }, [casoSeleccionado?.id]);
+
   // Subir un archivo .docx propio (exclusivo para Jefe de Despacho)
   const subirArchivoDocx = useCallback(
     async (file: File) => {
@@ -99,7 +114,7 @@ export function useEditorDocumentoDocx(
       const texto = extraerTextoPlanoDeDocx(arrayBuffer);
       const res = await analizarVariablesDocumentoConIAAction(
         texto,
-        apiKey,
+        clavesIA,
         proveedorEfectivo
       );
       setAnalizandoIA(false);
@@ -118,19 +133,19 @@ export function useEditorDocumentoDocx(
         );
       }
     },
-    [esJefe, apiKey, proveedorEfectivo]
+    [esJefe, clavesIA, proveedorEfectivo]
   );
 
   // Función 1: Ejecutar análisis con IA bajo demanda (Jefe de Despacho)
   const ejecutarDeteccionIA = useCallback(async () => {
     if (!bufferOriginal || !esJefe) return;
     setAnalizandoIA(true);
-    setMensajeEstado("Analizando documento con Inteligencia Artificial...");
+    setMensajeEstado("Analizando documento en cadena Multi-IA...");
 
     const texto = extraerTextoPlanoDeDocx(bufferOriginal);
     const res = await analizarVariablesDocumentoConIAAction(
       texto,
-      apiKey,
+      clavesIA,
       proveedorEfectivo
     );
     setAnalizandoIA(false);
@@ -153,7 +168,7 @@ export function useEditorDocumentoDocx(
     } else {
       setMensajeEstado(res.mensaje);
     }
-  }, [bufferOriginal, esJefe, apiKey, proveedorEfectivo]);
+  }, [bufferOriginal, esJefe, clavesIA, proveedorEfectivo]);
 
   // Capturar selección con el mouse (solo Jefe de Despacho puede crear nuevas variables)
   const capturarSeleccionMouse = useCallback(
@@ -260,18 +275,17 @@ export function useEditorDocumentoDocx(
     [seleccionActiva, esJefe]
   );
 
-  // Diligenciar el valor de una variable (disponible tanto para Jefe como para Gestores)
+  // Diligenciar el valor de una variable (disponible tanto para Jefe como para Gestores).
+  // Cuando el usuario borra todo el contenido del input (""), se mantiene "" para que pueda escribir a voluntad.
+  // Solo si nuevoValor es undefined (botón Restaurar), vuelve al valor de la BD o al texto original.
   const actualizarValorVariableGlobal = useCallback(
-    (idVinculo: string, nuevoValor: string) => {
+    (idVinculo: string, nuevoValor: string | undefined) => {
       setVinculos((prev) =>
         prev.map((v) =>
           v.id === idVinculo
             ? {
                 ...v,
-                valorPersonalizado:
-                  nuevoValor.trim() === "" || nuevoValor === v.textoOriginal
-                    ? undefined
-                    : nuevoValor,
+                valorPersonalizado: nuevoValor,
               }
             : v
         )

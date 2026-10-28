@@ -36,3 +36,22 @@ model Usuario {
 
   @@map("usuarios")
 }
+
+model CasoTutela {
+  id                 String   @id @default(cuid())
+  radicado           String   @unique
+  clienteNombre      String
+  clienteDocumento   String
+  clienteEmail       String
+  clienteTelefono    String
+  clienteDireccion   String
+  clienteCiudad      String   @default("Medellín, Antioquia")
+  entidadAccionada   String
+  derechoInvocado    String
+  hechosResumen      String
+  fechaRadicacion    String
+  fechaCreacion      DateTime @default(now())
+  fechaActualizacion DateTime @updatedAt
+
+  @@map("casos_tutela")
+}

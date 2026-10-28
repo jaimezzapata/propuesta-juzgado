@@ -1,5 +1,7 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
 @theme {
   --color-juzgado-navy: #0F2537;
   --color-juzgado-granate: #6B1D2F;
@@ -147,4 +149,17 @@
 [data-estilo="dark-lawfirm"] h3 {
   font-family: Georgia, Cambria, "Times New Roman", Times, serif;
   letter-spacing: 0.02em;
+}
+
+/* Estilizado limpio para la hoja de Word renderizada con docx-preview */
+.docx-container-override .docx-wrapper {
+  background: transparent !important;
+  padding: 12px !important;
+}
+
+.docx-container-override .docx-wrapper > section.docx {
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.18) !important;
+  margin-bottom: 16px !important;
+  color: #000000 !important;
+  background-color: #ffffff !important;
 }

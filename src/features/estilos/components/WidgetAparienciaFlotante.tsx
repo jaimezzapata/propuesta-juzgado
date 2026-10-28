@@ -68,7 +68,11 @@ export const WidgetAparienciaFlotante: React.FC = () => {
       case "neo-brutalista":
         return <Scale className="w-4 h-4 text-[#9A7B3E]" />;
       case "editorial-notarial":
-        return <BookOpen className="w-4 h-4 text-[#6B1D2F] dark:text-amber-200" />;
+        return (
+          <BookOpen
+            className={`w-4 h-4 ${esOscuro ? "text-amber-200" : "text-[#6B1D2F]"}`}
+          />
+        );
       case "dark-lawfirm":
         return <Building2 className="w-4 h-4 text-[#C5A880]" />;
     }
@@ -157,14 +161,14 @@ export const WidgetAparienciaFlotante: React.FC = () => {
         <button
           type="button"
           onClick={toggleModo}
-          className="p-1.5 rounded-full hover:bg-black/5 dark:hover:bg-white/10 transition-colors cursor-pointer"
+          className="p-1.5 rounded-full hover:bg-black/5 transition-colors cursor-pointer"
           title={esOscuro ? "Cambiar a Modo Claro" : "Cambiar a Modo Oscuro"}
           aria-label={esOscuro ? "Cambiar a Modo Claro" : "Cambiar a Modo Oscuro"}
         >
           {esOscuro ? (
             <Sun className="w-4 h-4 text-amber-400" />
           ) : (
-            <Moon className="w-4 h-4 text-slate-700 dark:text-slate-300" />
+            <Moon className="w-4 h-4 text-[#0F172A]" />
           )}
         </button>
 
@@ -174,7 +178,7 @@ export const WidgetAparienciaFlotante: React.FC = () => {
         <button
           type="button"
           onClick={() => setMenuAbierto(!menuAbierto)}
-          className="flex items-center gap-1.5 px-2 py-1 text-xs font-bold hover:bg-black/5 dark:hover:bg-white/10 transition-colors cursor-pointer rounded-full"
+          className="flex items-center gap-1.5 px-2 py-1 text-xs font-bold hover:bg-black/5 transition-colors cursor-pointer rounded-full"
           title="Personalizar Apariencia Legal"
         >
           <Palette className="w-3.5 h-3.5 text-[#9A7B3E]" />

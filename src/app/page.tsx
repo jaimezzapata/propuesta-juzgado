@@ -3,7 +3,7 @@
 import React from "react";
 import { useAuth } from "@/features/auth/hooks/useAuth";
 import { LoginView } from "@/features/auth/components/LoginView";
-import { PerfilAutenticadoView } from "@/features/auth/components/PerfilAutenticadoView";
+import { TutelasLandingView } from "@/features/tutelas/components/TutelasLandingView";
 import { TopBar } from "@/components/ui/TopBar";
 
 export default function Home() {
@@ -44,8 +44,8 @@ export default function Home() {
     <div className="min-h-screen">
       <TopBar usuario={usuario} onLogout={cerrarSesion} />
 
-      <main className="max-w-6xl mx-auto px-4 pb-12 pt-2">
-        <PerfilAutenticadoView usuario={usuario} onLogout={cerrarSesion} />
+      <main className="w-full max-w-[1640px] mx-auto px-4 sm:px-6 pt-15 pb-10">
+        <TutelasLandingView usuario={usuario} />
       </main>
     </div>
   );

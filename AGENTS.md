@@ -102,25 +102,9 @@ No duplicar código, lógica, estilos ni definiciones de tipos en ningún lugar 
 
 ---
 
-## 5. Sistema de Diseño Visual: Brutalismo con Colores Sobrios
-
-El diseño base y principal de la aplicación DEBE implementar el **estilo Brutalista / Neo-brutalismo** con la paleta judicial sobria:
-- **Paleta oficial:**
-  - **Azul Noche / Pizarra (`#0F172A`):** Bordes gruesos sólidos (`border-2 border-[#0F172A]`), sombras duras (`shadow-[3px_3px_0px_#0F172A]`), textos de máximo contraste.
-  - **Azul Petróleo Profundo (`#0F2537`):** Encabezados institucionales, barra superior del juzgado y tarjetas principales.
-  - **Granate / Vinotinto Judicial (`#6B1D2F`):** Botones decisorios, medidas cautelares urgentes, badges de alta autoridad.
-  - **Dorado / Ocre Judicial (`#9A7B3E`):** Acento primario, botones de acción destacados, focus states y badges de relevancia.
-  - **Blanco / Hueso (`#FFFFFF` / `#F8F9FA`):** Fondos limpios y superficies de lectura documental.
-- **Rasgos visuales obligatorios:**
-  - Bordes definidos y oscuros (`border-2 border-[#0F172A]`).
-  - Sombras duras de bloque sin difuminado (`shadow-[3px_3px_0px_#0F172A]`).
-  - Tipografía contundente, jerarquía clara y alta legibilidad.
-  - Cero degradados artificiales o vidrios difusos (*no glassmorphism*); transmitir formalidad, solidez y contundencia institucional.
-
-
 ---
 
-## 6. Prohibición Absoluta de Ejecución en el Navegador por el Asistente
+##. Prohibición Absoluta de Ejecución en el Navegador por el Asistente
 
 El asistente de IA NUNCA debe ejecutar herramientas de navegador (`browser_subagent`, clics, navegación automatizada o apertura de navegador).
 - Toda la ejecución y prueba visual en el navegador es potestad **exclusiva del USUARIO**.
